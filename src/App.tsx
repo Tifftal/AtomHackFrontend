@@ -2,7 +2,7 @@ import '@mantine/core/styles.css';
 import '@mantine/tiptap/styles.css';
 import './App.css';
 import { MantineProvider } from '@mantine/core';
-import DraftReport from './pages/draft_report';
+import DraftReport from './pages/DraftReport';
 
 function App() {
   return (
