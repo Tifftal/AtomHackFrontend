@@ -1,0 +1,15 @@
+.draft-report {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    align-items: center;
+
+    .group-btn {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 2vh;
+        align-self: flex-end;
+    }
+}
