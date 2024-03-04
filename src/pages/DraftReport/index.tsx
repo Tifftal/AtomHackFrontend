@@ -1,4 +1,5 @@
-import TextEditor from '../../widgets/text_editor'
+
+import TextEditor from '../../widgets/TextEditor';
 import './index.scss'
 import { Button } from '@mantine/core';
 
