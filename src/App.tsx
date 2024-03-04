@@ -1,13 +1,13 @@
 import '@mantine/core/styles.css';
 import '@mantine/tiptap/styles.css';
 import './App.css';
-import TextEditor from './pages/text_editor'
 import { MantineProvider } from '@mantine/core';
+import DraftReport from './pages/draft_report';
 
 function App() {
   return (
     <MantineProvider>
-      <TextEditor />
+      <DraftReport />
     </MantineProvider>
   )
 }
