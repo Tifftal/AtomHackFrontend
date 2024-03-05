@@ -4,14 +4,14 @@ import './App.css';
 import { MantineProvider } from '@mantine/core';
 import DraftReport from './pages/DraftReport';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Report } from './entities/Report';
+import { Reports } from './pages/Reports';
 
 function App() {
   return (
     <MantineProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Report owner={''} sendedTime={''} status='SUCCESS' file={[]} />}/>
+          <Route path="/" element={<Reports />} />
           <Route path="/draft" element={<DraftReport />} />
         </Routes>
       </BrowserRouter>

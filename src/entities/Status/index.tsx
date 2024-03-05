@@ -2,7 +2,6 @@ import { Badge } from "@mantine/core"
 import { ReportStatus } from "../types";
 
 export const Status: React.FC<{ status: ReportStatus }> = ({ status }) => {
-    const formattedStatus = status.toLowerCase();
 
     switch (status) {
         case 'SUCCESS':
@@ -12,7 +11,7 @@ export const Status: React.FC<{ status: ReportStatus }> = ({ status }) => {
                     color="green"
                     variant="filled"
                 >
-                    {formattedStatus}
+                    Успешно
                 </Badge>
             );
         case 'PENDING':
@@ -21,7 +20,7 @@ export const Status: React.FC<{ status: ReportStatus }> = ({ status }) => {
                     color="yellow"
                     variant="filled"
                     >
-                    {formattedStatus}
+                    В ожидании
                 </Badge>
             );
         case 'ERROR':
@@ -30,7 +29,7 @@ export const Status: React.FC<{ status: ReportStatus }> = ({ status }) => {
                     color="red"
                     variant="filled"
                     >
-                    {formattedStatus}
+                    Ошибка
                 </Badge>
             );
         case 'DRAFT':
@@ -40,7 +39,7 @@ export const Status: React.FC<{ status: ReportStatus }> = ({ status }) => {
                     color="gray"
                     variant="filled"
                 >
-                    {formattedStatus}
+                    Черновик
                 </Badge>
             )
     }
