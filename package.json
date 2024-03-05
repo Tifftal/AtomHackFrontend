@@ -13,6 +13,7 @@
     "@mantine/core": "^7.6.1",
     "@mantine/hooks": "^7.6.1",
     "@mantine/tiptap": "^7.6.1",
+    "@tabler/icons-react": "^2.47.0",
     "@tiptap/extension-highlight": "^2.2.4",
     "@tiptap/extension-link": "^2.2.4",
     "@tiptap/extension-subscript": "^2.2.4",

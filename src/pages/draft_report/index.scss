@@ -2,14 +2,25 @@
     display: flex;
     flex-direction: column;
     gap: 2vh;
-    align-items: center;
+    height: 98vh;
+    max-height: 98vh;
+    overflow-y: hidden;
 
-    .group-btn {
+    .footer-report {
+        width: 100%;
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: center;
-        gap: 2vh;
-        align-self: flex-end;
+
+        .group-btn {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 2vh;
+            padding-bottom: 1vh;
+        }
     }
+
+
 }
