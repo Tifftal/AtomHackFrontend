@@ -6,6 +6,14 @@
     max-height: 98vh;
     overflow-y: hidden;
 
+    .files {
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: row;
+        gap: 1vh;
+    }
+
     .footer-report {
         width: 100%;
         display: flex;
