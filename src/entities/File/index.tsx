@@ -1,5 +1,4 @@
 import { Props } from './types';
-import TruncateText from '../TruncateText';
 import pdf from '../../assets/icons/file-type-pdf.png'
 import png from '../../assets/icons/file-type-png.png'
 import jpg from '../../assets/icons/file-type-jpg.png'
@@ -8,8 +7,45 @@ import xls from '../../assets/icons/file-type-xls.png'
 import doc from '../../assets/icons/file-type-doc.png'
 import close from '../../assets/icons/x.png'
 import './index.scss'
+import { TruncateText } from '../../utils/TruncateText';
 
 const File: React.FC<Props> = ({ name, isDraft, type }) => {
+    const fileImg = (() => {
+        switch (type) {
+            case "image/png":
+                return (
+                    <img src={png} />
+                );
+            case "image/jpeg":
+                return (
+                    <img src={jpg} />
+                );
+            case "application/pdf":
+                return (
+                    <img src={pdf} />
+                );
+            case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                return (
+                    <img src={doc} />
+                );
+            case "application/msword":
+                return (
+                    <img src={doc} />
+                );
+            case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+                return (
+                    <img src={xls} />
+                );
+            case "application/vnd.ms-excel":
+                return (
+                    <img src={xls} />
+                );
+            default:
+                return (
+                    <img src={file} />
+                );
+        }
+    })()
     return (
 
         <div className='file'>
@@ -18,12 +54,8 @@ const File: React.FC<Props> = ({ name, isDraft, type }) => {
                     <button><img src={close} /></button>
                     : null
             }
-
-            {
-                type === 'image/png' ? <img src={png} /> : type === ('image/jpeg' || 'image/jpg') ? <img src={jpg} /> : type === 'application/pdf' ? <img src={pdf} /> : type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ? <img src={doc} /> :
-                    type === 'application/msword' ? <img src={doc} /> : type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ? <img src={xls} /> : type === 'application/vnd.ms-excel' ? <img src={xls} /> : <img src={file} />
-            }
-            <TruncateText text={name} maxLength={9} />
+            {fileImg}
+            <p>{TruncateText(name, 9)}</p>
         </div>
     )
 }
