@@ -9,7 +9,7 @@ import close from '../../assets/icons/x.png'
 import { TruncateText } from '../../utils/helpers'
 import './index.scss'
 
-const File: React.FC<Props> = ({ name, isDraft, type }) => {
+const File: React.FC<Props> = ({ index, name, isDraft, type, DeleteFile }) => {
     const fileImg = (() => {
         switch (type) {
             case "image/png":
@@ -50,7 +50,7 @@ const File: React.FC<Props> = ({ name, isDraft, type }) => {
         <div className='file'>
             {
                 isDraft ?
-                    <button><img src={close} /></button>
+                    <button onClick={() => { DeleteFile(index) }}><img src={close} /></button>
                     : null
             }
             {fileImg}
