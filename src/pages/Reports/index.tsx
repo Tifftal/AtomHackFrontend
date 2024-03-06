@@ -1,35 +1,23 @@
-import { Badge, Button, MultiSelect, NavLink, Table, TextInput } from "@mantine/core";
+import { Button, MultiSelect, NavLink, Table, TextInput } from "@mantine/core";
 import { reportsMock } from "../../constants/mocks";
 import { useState } from "react";
 import { Report } from "../../entities/Report";
 import { ActionIcon } from '@mantine/core';
-import { IconNotes, IconChevronRight, IconMail, IconPencilPlus, IconRefresh } from '@tabler/icons-react';
+import { IconPencilPlus, IconRefresh } from '@tabler/icons-react';
 import "./index.scss";
 import DraftReport from "../../widget/DraftReport";
+import { navlinks } from "./navlinks";
 
 export const Reports = () => {
-    // TODO: Add getting data from sockets
+    // TODO: Add getting data from stomp
     const [reports, setReports] = useState(reportsMock);
     const [active, setActive] = useState(0);
     const [isDraftOpen, setIsDraftOpen] = useState(false);
 
-    const data = [
-        {
-            icon: IconMail,
-            label: 'Все отчёты',
-            rightSection: <IconChevronRight size="1rem" stroke={1.5} />
-        },
-        {
-            icon: IconNotes,
-            label: 'Черновики',
-            rightSection: <IconChevronRight size="1rem" stroke={1.5} />
-        },
-    ];
-
-    const items = data.map((item, index) => (
+    const items = navlinks.map((item, index) => (
         <NavLink
             className="custom-navlink"
-            href="#required-for-focus"
+            href={`#${item.label}`}
             key={item.label}
             active={index === active}
             label={item.label}
