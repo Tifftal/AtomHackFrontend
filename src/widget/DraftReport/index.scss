@@ -40,4 +40,14 @@
             padding-bottom: 1vh;
         }
     }
+
+    &__collapsed {
+        min-height: auto;
+        min-width: auto;
+    }
+
+    &__fullscreen {
+        min-height: 92vh;
+        min-width: 135vh;
+    }
 }

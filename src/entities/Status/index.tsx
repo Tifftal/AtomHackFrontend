@@ -2,7 +2,7 @@ import { Badge } from "@mantine/core"
 import { ReportStatus } from "../types";
 
 export const Status: React.FC<{ status: ReportStatus }> = ({ status }) => {
-
+    // TODO: Change status style
     switch (status) {
         case 'SUCCESS':
             return (
@@ -19,7 +19,7 @@ export const Status: React.FC<{ status: ReportStatus }> = ({ status }) => {
                 <Badge
                     color="yellow"
                     variant="filled"
-                    >
+                >
                     В ожидании
                 </Badge>
             );
@@ -28,7 +28,7 @@ export const Status: React.FC<{ status: ReportStatus }> = ({ status }) => {
                 <Badge
                     color="red"
                     variant="filled"
-                    >
+                >
                     Ошибка
                 </Badge>
             );

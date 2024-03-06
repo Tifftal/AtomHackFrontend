@@ -1,50 +1,95 @@
 import TextEditor from '../../feature/TextEditor'
-import { ActionIcon, Button, Dialog, TextInput } from '@mantine/core';
+import { Button, Dialog, Group, TextInput, Text } from '@mantine/core';
+import { MdFullscreen } from 'react-icons/md';
+import { IoMdClose } from "react-icons/io";
+import { IoChevronDownOutline } from "react-icons/io5";
 import { useState } from 'react';
-import { FileButton, Group } from '@mantine/core';
-import { IconPaperclip } from '@tabler/icons-react';
 import File from '../../entities/File';
 import './index.scss'
+import { FileList } from '../../feature/FileList/FileList';
 
 const DraftReport = () => {
     const [files, setFiles] = useState<File[]>([]);
+    const [isCollapsed, setCollapsed] = useState(false);
+    const [isFullscreen, setFullscreen] = useState(false);
+
+    const handleCollapseWindow = () => {
+        setCollapsed((state) => !state);
+    }
+
+    const handleFullscreenWindow = () => {
+        setCollapsed(false);
+        setFullscreen((state) => !state);
+    }
 
     const DeleteFile = (index: number) => {
         const updatedFiles = files.filter((_, i) => i !== index);
         setFiles(updatedFiles);
     }
 
+    const draftReportClassName = [
+        'draft-report',
+        isCollapsed && 'draft-report__collapsed',
+        isFullscreen && !isCollapsed && 'draft-report__fullscreen',
+    ].filter(Boolean).join(' ');
+
     return (
         <Dialog
-            className='draft-report'
+            className={draftReportClassName}
             opened={true}
-            withCloseButton
         >
-            <TextInput
-                label="От кого"
-                withAsterisk
-                placeholder="Введите ФИО"
-            />
-            <TextEditor />
-            {files.length > 0 && (
-                <div className='files'>
-                    {files.map((file, index) => (
-                        <File key={index} index={index} name={file.name} isDraft={true} type={file.type} DeleteFile={DeleteFile} />
-                    ))}
-                </div>
+            <Group justify='space-between'>
+                <Text>
+                    Отчет
+                </Text>
+                <Button.Group>
+                    <Button
+                        color='violet'
+                        size='compact-sm'
+                        onClick={handleCollapseWindow}
+                    >
+                        <IoChevronDownOutline size={'18'} />
+                    </Button>
+                    <Button
+                        color='violet'
+                        size='compact-sm'
+                        onClick={handleFullscreenWindow}
+                    >
+                        <MdFullscreen size={'18'} />
+                    </Button>
+                    <Button
+                        color='red'
+                        size='compact-sm'
+                    >
+                        <IoMdClose size={'18'} />
+                    </Button>
+                </Button.Group>
+            </Group>
+            {!isCollapsed && (
+                <>
+                    <TextInput
+                        label="От кого"
+                        withAsterisk
+                        placeholder="Введите ФИО"
+                    />
+                    <TextInput
+                        label="Заголовок"
+                        withAsterisk
+                        placeholder="Введите заголовок"
+                    />
+                    <TextEditor />
+                    {files.length > 0 && (
+                        <div className='files'>
+                            {files.map((file, index) => (
+                                <File key={index} index={index} name={file.name} isDraft={true} type={file.type} DeleteFile={DeleteFile} />
+                            ))}
+                        </div>
+                    )}
+                    <FileList
+                        setFiles={setFiles}
+                    />
+                </>
             )}
-            <div className='footer-report'>
-                <div className='group-btn'>
-                    <Button variant="filled" color="violet">Отправить</Button>
-                    <Group justify="center">
-                        <FileButton onChange={(newFiles) => setFiles((prevFiles) => [...prevFiles, ...newFiles])} multiple>
-                            {(props) => <ActionIcon variant="transparent" color="rgba(0, 0, 0, 1)" size="lg" aria-label="Settings" {...props}>
-                                <IconPaperclip style={{ width: '80%', height: '80%' }} stroke={1.5} />
-                            </ActionIcon>}
-                        </FileButton>
-                    </Group>
-                </div>
-            </div>
         </Dialog>
     )
 }
