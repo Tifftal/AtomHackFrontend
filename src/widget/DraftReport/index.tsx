@@ -1,5 +1,5 @@
-import TextEditor from '../../widgets/TextEditor'
-import { ActionIcon, Button, TextInput } from '@mantine/core';
+import TextEditor from '../../feature/TextEditor'
+import { ActionIcon, Button, Dialog, TextInput } from '@mantine/core';
 import { useState } from 'react';
 import { FileButton, Group } from '@mantine/core';
 import { IconPaperclip } from '@tabler/icons-react';
@@ -15,14 +15,17 @@ const DraftReport = () => {
     }
 
     return (
-        <div className='draft-report'>
+        <Dialog
+            className='draft-report'
+            opened={true}
+            withCloseButton
+        >
             <TextInput
                 label="От кого"
                 withAsterisk
                 placeholder="Введите ФИО"
             />
             <TextEditor />
-
             {files.length > 0 && (
                 <div className='files'>
                     {files.map((file, index) => (
@@ -30,7 +33,6 @@ const DraftReport = () => {
                     ))}
                 </div>
             )}
-
             <div className='footer-report'>
                 <div className='group-btn'>
                     <Button variant="filled" color="violet">Отправить</Button>
@@ -43,7 +45,7 @@ const DraftReport = () => {
                     </Group>
                 </div>
             </div>
-        </div>
+        </Dialog>
     )
 }
 

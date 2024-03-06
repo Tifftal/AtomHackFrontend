@@ -5,11 +5,13 @@ import { Report } from "../../entities/Report";
 import { ActionIcon } from '@mantine/core';
 import { IconNotes, IconChevronRight, IconMail, IconPencilPlus, IconRefresh } from '@tabler/icons-react';
 import "./index.scss";
+import DraftReport from "../../widget/DraftReport";
 
 export const Reports = () => {
     // TODO: Add getting data from sockets
     const [reports, setReports] = useState(reportsMock);
     const [active, setActive] = useState(0);
+    const [isDraftOpen, setIsDraftOpen] = useState(false);
 
     const data = [
         {
@@ -40,9 +42,20 @@ export const Reports = () => {
 
     return (
         <div className="reports">
+            {isDraftOpen && (
+                <DraftReport />
+            )}
             <div className="sidebar">
                 <div className="sidebar-new-btn">
-                    <Button leftSection={<IconPencilPlus size={20} />} fullWidth variant="filled" color="violet">Написать</Button>
+                    <Button
+                        leftSection={<IconPencilPlus size={20} />}
+                        fullWidth
+                        variant="filled"
+                        color="violet"
+                        onClick={()=>(setIsDraftOpen((state) => !state))}
+                    >
+                        Написать
+                    </Button>
                     <ActionIcon variant="filled" color="violet" size="lg" aria-label="Settings">
                         <IconRefresh style={{ width: '70%', height: '70%' }} stroke={2} />
                     </ActionIcon>
