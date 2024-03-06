@@ -9,3 +9,8 @@ export type Props = {
     status: ReportStatus;
     file?: File[];
 };
+
+export type SearchParams = {
+    statuses: ReportStatus[],
+    search: string
+}
