@@ -6,23 +6,23 @@ import { ActionIcon } from '@mantine/core';
 import { IconNotes, IconChevronRight, IconMail, IconPencilPlus, IconRefresh } from '@tabler/icons-react';
 import "./index.scss";
 
-const data = [
-    {
-        icon: IconMail,
-        label: 'Все отчёты',
-        rightSection: <IconChevronRight size="1rem" stroke={1.5} />
-    },
-    {
-        icon: IconNotes,
-        label: 'Черновики',
-        rightSection: <IconChevronRight size="1rem" stroke={1.5} />
-    },
-];
-
 export const Reports = () => {
     // TODO: Add getting data from sockets
     const [reports, setReports] = useState(reportsMock);
     const [active, setActive] = useState(0);
+
+    const data = [
+        {
+            icon: IconMail,
+            label: 'Все отчёты',
+            rightSection: <IconChevronRight size="1rem" stroke={1.5} />
+        },
+        {
+            icon: IconNotes,
+            label: 'Черновики',
+            rightSection: <IconChevronRight size="1rem" stroke={1.5} />
+        },
+    ];
 
     const items = data.map((item, index) => (
         <NavLink
