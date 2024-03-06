@@ -7,8 +7,11 @@ import { useState } from 'react';
 import File from '../../entities/File';
 import './index.scss'
 import { FileList } from '../../feature/FileList/FileList';
+import { Props } from './types';
 
-const DraftReport = () => {
+const DraftReport: React.FC<Props> = ({
+    toggleReport,
+}) => {
     const [files, setFiles] = useState<File[]>([]);
     const [isCollapsed, setCollapsed] = useState(false);
     const [isFullscreen, setFullscreen] = useState(false);
@@ -60,6 +63,7 @@ const DraftReport = () => {
                     <Button
                         color='red'
                         size='compact-sm'
+                        onClick={() => toggleReport(state => !state)}
                     >
                         <IoMdClose size={'18'} />
                     </Button>

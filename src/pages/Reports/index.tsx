@@ -43,7 +43,9 @@ export const Reports = () => {
     return (
         <div className="reports">
             {isDraftOpen && (
-                <DraftReport />
+                <DraftReport
+                    toggleReport={setIsDraftOpen}
+                />
             )}
             <div className="sidebar">
                 <div className="sidebar-new-btn">
