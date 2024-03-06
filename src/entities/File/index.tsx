@@ -1,4 +1,4 @@
-import { Props } from './types';
+import { Props } from './types'
 import pdf from '../../assets/icons/file-type-pdf.png'
 import png from '../../assets/icons/file-type-png.png'
 import jpg from '../../assets/icons/file-type-jpg.png'
@@ -6,8 +6,8 @@ import file from '../../assets/icons/file.png'
 import xls from '../../assets/icons/file-type-xls.png'
 import doc from '../../assets/icons/file-type-doc.png'
 import close from '../../assets/icons/x.png'
+import { TruncateText } from '../../utils/helpers'
 import './index.scss'
-import { TruncateText } from '../../utils/TruncateText';
 
 const File: React.FC<Props> = ({ name, isDraft, type }) => {
     const fileImg = (() => {
@@ -47,7 +47,6 @@ const File: React.FC<Props> = ({ name, isDraft, type }) => {
         }
     })()
     return (
-
         <div className='file'>
             {
                 isDraft ?
