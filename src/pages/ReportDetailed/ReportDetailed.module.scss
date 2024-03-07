@@ -1,0 +1,32 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 0 5px rgba(95, 61, 196, 0.2);
+  height: 96vh;
+  max-height: 96vh;
+
+  &__sidebar {
+    border-radius: 5px 0 0 5px;
+    width: 20%;
+    padding: 2vh;
+    background-color: rgba(95, 61, 196, 0.03);
+
+    &-new-btn {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 1vh;
+      width: 100%;
+      margin-bottom: 2vh;
+    }
+  }
+
+  &__report {
+    padding: 2vh;
+    width: 80%;
+    height: 96vh;
+    overflow-y: auto;
+  }
+}
