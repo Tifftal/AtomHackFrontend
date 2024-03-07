@@ -1,5 +1,15 @@
 .mantine-RichTextEditor-root {
-    flex-grow: 1;
-    overflow-y: auto;
-    background-color: white;
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: white;
+}
+
+.btn-save {
+  display: flex;
+  gap: 8px;
+
+  & > svg {
+    width: 70%;
+    height: 70%;
+  }
 }
