@@ -6,10 +6,11 @@
   box-shadow: 0 0 5px rgba(95, 61, 196, 0.2);
   height: 96vh;
   max-height: 96vh;
+  position: relative;
 
   .reports-table {
     padding: 2vh;
-    width: 80%;
+    width: 76vw;
     height: 96vh;
     overflow-y: auto;
 

@@ -25,6 +25,7 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
 
   const handleCollapseWindow = () => {
     setCollapsed((state) => !state);
+    setFullscreen(false);
   };
 
   const handleFullscreenWindow = () => {
@@ -59,23 +60,43 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
   });
 
   return (
-    <Dialog className={draftReportClassName} opened={true}>
+    <Dialog className={draftReportClassName} opened={true} position={draftReportClassName === "draft-report draft-report__fullscreen" ? { bottom: "2vh", right: "2vw" } : draftReportClassName === "draft-report draft-report__collapsed" ? { bottom: "0", right: "2vw" } : { bottom: "2vh", right: "2vw" }}>
       <Group justify="space-between">
-        <Text>Отчет</Text>
+        <Text size="lg" fw={600}>Новый отчет</Text>
         <Button.Group>
           <Button
             color="violet"
             size="compact-sm"
             onClick={handleCollapseWindow}
+          // onClick={() => {
+          //   draftReportClassName === "draft-report" ?
+          //     handleCollapseWindow() :
+          //     draftReportClassName === "draft-report draft-report__fullscreen" ?
+          //       handleCollapseWindow() :
+          //       handleCollapseWindow()
+          // }
+          // }
           >
-            <IoChevronDownOutline size={"18"} />
+            {
+              draftReportClassName === "draft-report" ?
+                <IoChevronDownOutline size={"18"} /> :
+                draftReportClassName === "draft-report draft-report__fullscreen" ?
+                  <IoChevronDownOutline size={"18"} /> :
+                  <MdFullscreen size={"12"} />
+            }
           </Button>
           <Button
             color="violet"
             size="compact-sm"
             onClick={handleFullscreenWindow}
           >
-            <MdFullscreen size={"18"} />
+            {
+              draftReportClassName === "draft-report" ?
+                <MdFullscreen size={"18"} /> :
+                draftReportClassName === "draft-report draft-report__fullscreen" ?
+                  <MdFullscreen size={"12"} /> :
+                  <MdFullscreen size={"18"} />
+            }
           </Button>
           <Button
             color="red"
