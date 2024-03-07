@@ -1,5 +1,5 @@
 import { Table } from "@mantine/core";
-import { Props } from "../types";
+import { Props } from "./types";
 import { Status } from "../Status";
 import { formatTime } from "../../utils/helpers";
 
@@ -10,7 +10,7 @@ import { useNavigate } from "react-router";
 export const Report: React.FC<Props> = ({
   id,
   owner,
-  sendedTime,
+  sentTime: sendedTime,
   payload = "",
   status,
   file = [],

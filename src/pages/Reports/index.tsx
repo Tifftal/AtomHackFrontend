@@ -1,33 +1,40 @@
 import { MultiSelect, Table, TextInput } from "@mantine/core";
-import { REPORTS_MOCK } from "../../constants/mocks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Report } from "../../entities/Report";
-import "./index.scss";
-import { ReportStatus } from "../../entities/types";
-import { Props } from "../../entities/types";
-import { SearchParams } from "../../entities/types";
+import { ReportDeliveryStatus, ReportModel } from "../../entities/Report/types";
+import { SearchParams } from "../../entities/Report/types";
 import { ReportSidebar } from "../../widget/ReportSidebar";
-import { Link } from "react-router-dom";
+import { getAll } from "../../entities/Report/api";
+
+import "./index.scss";
+
+const PAGE_SIZE = 10;
 
 export const Reports = () => {
   // TODO: Add getting data from stomp
-  const [reports, setReports] = useState(REPORTS_MOCK as Props[]);
-  const [activeReport, setActiveReport] = useState<string>("")
+  const [activeReport, setActiveReport] = useState<string>("");
+  const [reports, setReports] = useState<ReportModel[]>([]);
+
+  // @todo: добавить бесконечный скролл
+  const [currentPage] = useState(0);
+
   const [searchParams, setSearchParams] = useState<SearchParams>({
     statuses: [],
     search: "",
   });
 
-  // TODO когда будем получать отчеты с бека, надо добавить фильтр по activeReport
-  // activeReport = "" -- все отчеты
-  // activeReport = "*Тут имя пользователя*" -- мои отчеты
+  useEffect(() => {
+    getAll({ page: currentPage, pageSize: PAGE_SIZE }).then((reports) =>
+      setReports(reports.data)
+    );
+  });
 
   const handleStatusChange = (statuses: string[]) => {
-    const newStatuses: ReportStatus[] = [];
+    const newStatuses: ReportDeliveryStatus[] = [];
     if (statuses.length === 0) {
       setSearchParams({
         ...searchParams,
-        statuses: ["DRAFT", "ERROR", "PENDING", "SUCCESS"],
+        statuses: ["ERROR", "PENDING", "SUCCESS"],
       });
     } else {
       if (statuses.includes("Успешно")) {
@@ -42,7 +49,6 @@ export const Reports = () => {
     }
     setSearchParams({ ...searchParams, statuses: newStatuses });
   };
-
 
   return (
     <div className="reports">
@@ -97,8 +103,8 @@ export const Reports = () => {
                 <Report
                   key={report.id}
                   owner={report.owner}
-                  sendedTime={report.sendedTime}
-                  recievedTime={report.recievedTime}
+                  sentTime={report.sentTime}
+                  receivedTime={report.receivedTime}
                   payload={report.payload}
                   status={report.status}
                   file={report.file}
