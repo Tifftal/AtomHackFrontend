@@ -14,9 +14,12 @@ import TextAlign from "@tiptap/extension-text-align";
 import Subscript from "@tiptap/extension-subscript";
 import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
-
+import { mockFiles } from "../../entities/File/mock";
 import s from "./ReportDetailed.module.scss";
 import { saveMarkdownFile } from "../../utils/files";
+import File from "../../entities/File";
+import { getNameAndType } from "./utils";
+
 
 export const ReportDetailed = () => {
   const { id } = useParams();
@@ -65,48 +68,65 @@ export const ReportDetailed = () => {
       <TextEditor
         editor={editor}
         customToolbar={
-          <div className={s.root__toolbar}>
-            <IconChevronLeft
-              size={20}
-              stroke={1.5}
-              onClick={() => navigate(-1)}
-              cursor="pointer"
-            />
+          <>
+            <div className={s.root__toolbar}>
+              <IconChevronLeft
+                size={20}
+                stroke={1.5}
+                onClick={() => navigate(-1)}
+                cursor="pointer"
+              />
 
-            <Text
-              tt="uppercase"
-              fw={700}
-              variant="gradient"
-              gradient={{ from: "blue", to: "cyan" }}
-            >
-              {report.owner}
-            </Text>
-
-            <Button
-              leftSection={<IconDownload size={20} />}
-              variant="outline"
-              color="blue"
-              onClick={handleSave}
-            >
-              Сохранить
-            </Button>
-
-            <div style={{ textAlign: "end" }}>
-              <Text size="sm" fw={500}>
-                Отправлено: {report.sendedTime.toLocaleString()}
+              <Text
+                tt="uppercase"
+                fw={700}
+                variant="gradient"
+                gradient={{ from: "blue", to: "cyan" }}
+              >
+                {report.owner}
               </Text>
 
-              {report.recievedTime ? (
-                <Text size="sm">
-                  Доставлено: {report.recievedTime.toLocaleString()}
+              <Button
+                leftSection={<IconDownload size={20} />}
+                variant="outline"
+                color="blue"
+                onClick={handleSave}
+              >
+                Сохранить
+              </Button>
+
+              <div style={{ textAlign: "end" }}>
+                <Text size="sm" fw={500}>
+                  Отправлено: {report.sendedTime.toLocaleString()}
                 </Text>
-              ) : (
-                <Text c="dimmed" size="sm">
-                  Не доставлено
-                </Text>
-              )}
+
+                {report.recievedTime ? (
+                  <Text size="sm">
+                    Доставлено: {report.recievedTime.toLocaleString()}
+                  </Text>
+                ) : (
+                  <Text c="dimmed" size="sm">
+                    Не доставлено
+                  </Text>
+                )}
+              </div>
             </div>
-          </div>
+            {
+              mockFiles.map((file) => {
+                const { type, fileName } = getNameAndType(file.path);
+                return (
+                  <File 
+                    key={file.id}
+                    index={file.id}
+                    name={fileName || ""}
+                    isDraft={false}
+                    type={type || ""}
+                    DeleteFile={() => {}}
+                  />
+                );
+              })
+            }
+          </>
         }
       />
     </div>
