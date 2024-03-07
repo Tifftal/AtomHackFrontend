@@ -1,8 +1,7 @@
-import { Content } from "@tiptap/core";
+import { Editor } from "@tiptap/react";
 
 export type Props = {
   /** Текущий контент редактора */
-  content?: Content;
-  isEditMode?: boolean;
+  editor: Editor | null;
   customToolbar?: React.ReactNode;
 };

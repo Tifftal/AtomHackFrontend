@@ -1,29 +1,58 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import TurndownService from "turndown";
 import TextEditor from "../../feature/TextEditor";
 import { ReportSidebar } from "../../widget/ReportSidebar";
-import s from "./ReportDetailed.module.scss";
 import { REPORTS_MOCK } from "../../constants/mocks";
 import { useCallback } from "react";
 import { Button, Text } from "@mantine/core";
-import { IconDownload } from "@tabler/icons-react";
+import { IconChevronLeft, IconDownload } from "@tabler/icons-react";
+import { useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import Superscript from "@tiptap/extension-superscript";
+import TextAlign from "@tiptap/extension-text-align";
+import Subscript from "@tiptap/extension-subscript";
+import Link from "@tiptap/extension-link";
+import Highlight from "@tiptap/extension-highlight";
+
+import s from "./ReportDetailed.module.scss";
+import { saveMarkdownFile } from "../../utils/files";
 
 export const ReportDetailed = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const report = REPORTS_MOCK.find((report) => report.id === Number(id));
 
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Underline,
+      Link,
+      Superscript,
+      Subscript,
+      Highlight,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+    ],
+    editable: false,
+    content: report ? JSON.parse(report.payload) : "",
+  });
+
   const handleSave = useCallback(() => {
-    const markdownContent = `# Author: ${report?.owner}\n\n${report?.payload}`;
-    const blob = new Blob([markdownContent], { type: "text/markdown" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${report?.owner}.md`;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
-  }, [report?.owner, report?.payload]);
+    if (!report || !editor) {
+      return;
+    }
+
+    const htmlContent = editor.getHTML();
+
+    const turndownService = new TurndownService();
+    const markdownContent = turndownService.turndown(htmlContent);
+
+    saveMarkdownFile(
+      `${report.owner}_${report.sendedTime.getTime()}`,
+      markdownContent
+    );
+  }, [editor, report]);
 
   if (!id || !report) {
     // @todo: замена на NotFoundPage
@@ -34,10 +63,16 @@ export const ReportDetailed = () => {
     <div className={s.root}>
       <ReportSidebar />
       <TextEditor
-        isEditMode={false}
-        content={JSON.parse(report.payload)}
+        editor={editor}
         customToolbar={
           <div className={s.root__toolbar}>
+            <IconChevronLeft
+              size={20}
+              stroke={1.5}
+              onClick={() => navigate(-1)}
+              cursor="pointer"
+            />
+
             <Text
               tt="uppercase"
               fw={700}

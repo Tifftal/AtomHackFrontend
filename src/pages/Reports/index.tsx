@@ -7,6 +7,7 @@ import { ReportStatus } from "../../entities/types";
 import { Props } from "../../entities/types";
 import { SearchParams } from "../../entities/types";
 import { ReportSidebar } from "../../widget/ReportSidebar";
+import { Link } from "react-router-dom";
 
 export const Reports = () => {
   // TODO: Add getting data from stomp

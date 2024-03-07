@@ -8,6 +8,15 @@ import File from "../../entities/File";
 import "./index.scss";
 import { FileList } from "../FileList/FileList";
 import { Props } from "./types";
+import { useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import Superscript from "@tiptap/extension-superscript";
+import TextAlign from "@tiptap/extension-text-align";
+import Placeholder from "@tiptap/extension-placeholder";
+import Subscript from "@tiptap/extension-subscript";
+import Link from "@tiptap/extension-link";
+import Highlight from "@tiptap/extension-highlight";
 
 const DraftReport: React.FC<Props> = ({ toggleReport }) => {
   const [files, setFiles] = useState<File[]>([]);
@@ -35,6 +44,19 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
   ]
     .filter(Boolean)
     .join(" ");
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Underline,
+      Link,
+      Superscript,
+      Subscript,
+      Highlight,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Placeholder.configure({ placeholder: "Начните писать отчёт" }),
+    ],
+  });
 
   return (
     <Dialog className={draftReportClassName} opened={true}>
@@ -72,7 +94,7 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
             withAsterisk
             placeholder="Введите заголовок"
           />
-          <TextEditor />
+          <TextEditor editor={editor} />
           {files.length > 0 && (
             <div className="files">
               {files.map((file, index) => (

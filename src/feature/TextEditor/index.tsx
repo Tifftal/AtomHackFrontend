@@ -1,42 +1,9 @@
-import { RichTextEditor, Link } from "@mantine/tiptap";
-import { useEditor } from "@tiptap/react";
-import Highlight from "@tiptap/extension-highlight";
-import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import TextAlign from "@tiptap/extension-text-align";
-import Superscript from "@tiptap/extension-superscript";
-import SubScript from "@tiptap/extension-subscript";
-import Placeholder from "@tiptap/extension-placeholder";
+import { RichTextEditor } from "@mantine/tiptap";
 import { Props } from "./types";
 
 import "./index.scss";
-import { useEffect } from "react";
 
-const TextEditor = ({ content, isEditMode, customToolbar }: Props) => {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Underline,
-      Link,
-      Superscript,
-      SubScript,
-      Highlight,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Placeholder.configure({ placeholder: "Начните писать отчёт" }),
-    ],
-    content: content ?? "",
-    editable: isEditMode,
-  });
-
-  // нужно, чтобы реактивно менять контент редактора
-  // @todo: можно объект редактора сохранять в сторе,
-  // чтобы к нему обращаться снаружи без лишних сайд-эффектов
-  useEffect(() => {
-    if (content) {
-      editor?.commands.setContent(content);
-    }
-  }, [content, editor]);
-
+const TextEditor = ({ editor, customToolbar }: Props) => {
   return (
     <RichTextEditor editor={editor}>
       <RichTextEditor.Toolbar sticky stickyOffset={0}>
