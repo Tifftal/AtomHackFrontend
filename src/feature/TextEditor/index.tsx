@@ -53,8 +53,6 @@ const TextEditor = ({ editor, customToolbar }: Props) => {
               <RichTextEditor.Undo />
               <RichTextEditor.Redo />
             </RichTextEditor.ControlsGroup>
-
-            <button onClick={() => console.log(editor?.getJSON())}>JSON</button>
           </>
         )}
       </RichTextEditor.Toolbar>
