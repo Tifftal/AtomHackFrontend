@@ -68,14 +68,6 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
             color="violet"
             size="compact-sm"
             onClick={handleCollapseWindow}
-          // onClick={() => {
-          //   draftReportClassName === "draft-report" ?
-          //     handleCollapseWindow() :
-          //     draftReportClassName === "draft-report draft-report__fullscreen" ?
-          //       handleCollapseWindow() :
-          //       handleCollapseWindow()
-          // }
-          // }
           >
             {
               draftReportClassName === "draft-report" ?
