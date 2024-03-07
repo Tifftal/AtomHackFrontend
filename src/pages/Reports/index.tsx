@@ -7,11 +7,33 @@ import { IconPencilPlus, IconRefresh } from '@tabler/icons-react';
 import "./index.scss";
 import DraftReport from "../../widget/DraftReport";
 import { navlinks } from "./navlinks";
+import { ReportStatus } from "../../entities/types";
+import { Props } from "../../entities/types";
+import { SearchParams } from "../../entities/types";
 
 export const Reports = () => {
     // TODO: Add getting data from stomp
-    const [reports, setReports] = useState(reportsMock);
+    const [reports, setReports] = useState(reportsMock as Props[]);
     const [active, setActive] = useState(0);
+    const [searchParams, setSearchParams] = useState<SearchParams>({ statuses: [], search: '' });
+
+    const handleStatusChange = (statuses: string[]) => {
+        const newStatuses: ReportStatus[] = [];
+        if (statuses.length === 0) {
+            setSearchParams({ ...searchParams, statuses: ['DRAFT', 'ERROR', 'PENDING', 'SUCCESS'] });
+        } else {
+            if (statuses.includes('Успешно')) {
+                newStatuses.push('SUCCESS');
+            }
+            if (statuses.includes('В ожидании')) {
+                newStatuses.push('PENDING');
+            }
+            if (statuses.includes('Ошибка')) {
+                newStatuses.push('ERROR');
+            }
+        }
+        setSearchParams({ ...searchParams, statuses: newStatuses });
+    }    
     const [isDraftOpen, setIsDraftOpen] = useState(false);
 
     const items = navlinks.map((item, index) => (
@@ -42,7 +64,7 @@ export const Reports = () => {
                         fullWidth
                         variant="filled"
                         color="violet"
-                        onClick={()=>(setIsDraftOpen((state) => !state))}
+                        onClick={() => (setIsDraftOpen((state) => !state))}
                     >
                         Написать
                     </Button>
@@ -61,10 +83,12 @@ export const Reports = () => {
                         data={['Успешно', 'В ожидании', 'Ошибка']}
                         label="Выберите статусы"
                         comboboxProps={{ transitionProps: { transition: 'scale-y', duration: 200 } }}
+                        onChange={(value) => handleStatusChange(value)}
                     />
                     <TextInput
                         label="Поиск"
                         className="reports-table-filters__search"
+                        onChange={(event) => setSearchParams({ ...searchParams, search: event.currentTarget.value })}
                     >
 
                     </TextInput>
@@ -86,17 +110,19 @@ export const Reports = () => {
                         </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>
-                        {reports.map(report => (
-                            <Report
-                                key={report.id}
-                                owner={report.owner}
-                                sendedTime={report.sendedTime}
-                                recievedTime={report.recievedTime}
-                                payload={report.payload}
-                                status={report.status}
-                                file={report.file}
-                            />
-                        ))}
+                        {reports
+                            .filter(report => searchParams.statuses.length === 0 || searchParams.statuses.includes(report.status))
+                            .filter(report => report.owner.toLowerCase().includes(searchParams.search.toLowerCase()) || report.payload?.toLowerCase().includes(searchParams.search.toLowerCase()))
+                            .map(report => (
+                                <Report
+                                    key={report.id}
+                                    owner={report.owner}
+                                    sendedTime={report.sendedTime}
+                                    recievedTime={report.recievedTime}
+                                    payload={report.payload}
+                                    status={report.status}
+                                    file={report.file} id={report.id} />
+                            ))}
                     </Table.Tbody>
                 </Table>
             </div>
