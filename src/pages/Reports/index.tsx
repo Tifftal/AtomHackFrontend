@@ -4,7 +4,8 @@ import { Report } from "../../entities/Report";
 import { ReportDeliveryStatus, ReportModel } from "../../entities/Report/types";
 import { SearchParams } from "../../entities/Report/types";
 import { ReportSidebar } from "../../widget/ReportSidebar";
-import { getAll } from "../../entities/Report/api";
+import useWebSocket from "react-use-websocket";
+import { BASE_WS_URL } from "../../shared/config";
 
 import "./index.scss";
 
@@ -23,11 +24,22 @@ export const Reports = () => {
     search: "",
   });
 
+  // const { sendMessage, lastMessage, readyState } = useWebSocket(
+  //   `${BASE_WS_URL}/ws/v1/document/formed/?page=1&pageSize=10`
+  // );
+
+  // useEffect(() => {
+  //   if (lastMessage !== null) {
+  //     console.log(lastMessage);
+  //   }
+  // }, [lastMessage]);
+
   useEffect(() => {
-    getAll({ page: currentPage, pageSize: PAGE_SIZE }).then((reports) =>
-      setReports(reports.data)
+    const socket = new WebSocket(
+      `${BASE_WS_URL}/ws/v1/document/formed?page=1&pageSize=10`
     );
-  });
+    socket.addEventListener("open", () => console.log("открыт!"));
+  }, []);
 
   const handleStatusChange = (statuses: string[]) => {
     const newStatuses: ReportDeliveryStatus[] = [];
