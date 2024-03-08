@@ -1,11 +1,16 @@
 export const formatTime = (time: Date | undefined) => {
     if (!time) {
         return 'Undefined';
-    };
+    }
 
-    const hours = String(time.getHours()).padStart(0, '2');
-    const minutes = String(time.getHours()).padStart(0, '2');
-
+    let hours = String(time.getHours()).padStart(0, '2');
+    if (Number(hours) < 10) {
+        hours = `0${hours}`
+    }
+    let minutes = String(time.getHours()).padStart(0, '2');
+    if (Number(minutes) < 10) {
+        minutes = `0${minutes}`
+    }
     return `${hours}:${minutes}`;
 };
 
