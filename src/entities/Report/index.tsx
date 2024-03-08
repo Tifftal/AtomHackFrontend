@@ -13,6 +13,7 @@ export const Report: React.FC<Props> = ({
   sentTime: sendedTime,
   payload = "",
   status,
+  // @ts-ignore
   file = [],
 }) => {
   const formattedSendedTime = formatTime(sendedTime);

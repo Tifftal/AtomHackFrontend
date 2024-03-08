@@ -12,23 +12,17 @@ export const Status: React.FC<{ status: ReportDeliveryStatus }> = ({
           Успешно
         </Badge>
       );
-    case "PENDING":
-      return (
-        <Badge color="yellow" variant="filled">
-          В ожидании
-        </Badge>
-      );
     case "ERROR":
       return (
         <Badge color="red" variant="filled">
           Ошибка
         </Badge>
       );
-    case "DRAFT":
+    case "PENDING":
     default:
       return (
-        <Badge color="gray" variant="filled">
-          Черновик
+        <Badge color="yellow" variant="filled">
+          В ожидании
         </Badge>
       );
   }
