@@ -112,6 +112,7 @@ export const ReportDetailed = () => {
               </div>
             </div>
             {
+              // @todo: изменить тип данных для file в Props 
               mockFiles.map((file) => {
                 const { type, fileName } = getNameAndType(file.path);
                 return (
