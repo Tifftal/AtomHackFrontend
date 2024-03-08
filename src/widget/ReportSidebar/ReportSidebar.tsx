@@ -2,13 +2,19 @@ import { ActionIcon, Button, NavLink } from "@mantine/core";
 import { IconPencilPlus, IconRefresh } from "@tabler/icons-react";
 import DraftReport from "../../feature/DraftReport";
 import { useState } from "react";
-import { NAV_LINK_LIST } from "./config";
+import { NAV_LINK_LIST, Props } from "./config";
 
 import s from "./ReportSidebar.module.scss";
 
-export const ReportSidebar = () => {
+export const ReportSidebar: React.FC<Props> = ({ setActiveReport }) => {
   const [isDraftOpen, setIsDraftOpen] = useState(false);
   const [active, setActive] = useState(0);
+
+  const handleSetActiveReport = (index: number) => {
+    setActive(index)
+    setActiveReport(index)
+    console.log(index)
+  }
 
   const items = NAV_LINK_LIST.map((item, index) => (
     <NavLink
@@ -19,7 +25,7 @@ export const ReportSidebar = () => {
       label={item.label}
       rightSection={item.rightSection}
       leftSection={<item.icon size="1rem" stroke={1.5} />}
-      onClick={() => setActive(index)}
+      onClick={() => handleSetActiveReport(index)}
       color="violet.6"
     />
   ));
