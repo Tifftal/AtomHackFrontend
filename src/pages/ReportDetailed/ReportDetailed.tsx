@@ -61,7 +61,7 @@ export const ReportDetailed = () => {
 
   return (
     <div className={s.root}>
-      <ReportSidebar />
+      {/* <ReportSidebar /> */}
       <TextEditor
         editor={editor}
         customToolbar={

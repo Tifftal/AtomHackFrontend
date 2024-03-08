@@ -12,15 +12,15 @@ import { Link } from "react-router-dom";
 export const Reports = () => {
   // TODO: Add getting data from stomp
   const [reports, setReports] = useState(REPORTS_MOCK as Props[]);
-  const [activeReport, setActiveReport] = useState<number>(0)
+  const [activeReport, setActiveReport] = useState<string>("")
   const [searchParams, setSearchParams] = useState<SearchParams>({
     statuses: [],
     search: "",
   });
 
   // TODO когда будем получать отчеты с бека, надо добавить фильтр по activeReport
-  // activeReport = 0 -- все отчеты
-  // activeReport = 1 -- мои отчеты
+  // activeReport = "" -- все отчеты
+  // activeReport = "*Тут имя пользователя*" -- мои отчеты
 
   const handleStatusChange = (statuses: string[]) => {
     const newStatuses: ReportStatus[] = [];
@@ -46,7 +46,7 @@ export const Reports = () => {
 
   return (
     <div className="reports">
-      <ReportSidebar setActiveReport={setActiveReport}/>
+      <ReportSidebar setActiveReport={setActiveReport} />
       <div className="reports-table">
         <div className="reports-table-filters">
           <MultiSelect

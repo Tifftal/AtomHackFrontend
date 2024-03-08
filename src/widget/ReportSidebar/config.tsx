@@ -18,6 +18,4 @@ export const NAV_LINK_LIST = [
   },
 ];
 
-export type Props = {
-  setActiveReport: Function
-}
+export const NAME = "Varvara Talankina";
