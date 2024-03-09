@@ -10,13 +10,13 @@ import { useNavigate } from "react-router";
 export const Report: React.FC<Props> = ({
   id,
   owner,
-  sentTime: sendedTime,
+  sentTime,
   payload = "",
   status,
   // @ts-ignore
   file = [],
 }) => {
-  const formattedSendedTime = formatTime(sendedTime);
+  const formattedSendedTime = formatTime(sentTime);
 
   const truncatedPayload = (() => {
     if (payload.length > 50) {

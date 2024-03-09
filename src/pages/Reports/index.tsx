@@ -111,8 +111,8 @@ export const Reports = () => {
                 <Report
                   key={report.id}
                   owner={report.owner}
-                  sentTime={report.sentTime}
-                  receivedTime={report.receivedTime}
+                  sentTime={new Date(report.sentTime)}
+                  receivedTime={new Date(report.receivedTime)}
                   payload={report.payload}
                   status={report.status}
                   file={report.file}
