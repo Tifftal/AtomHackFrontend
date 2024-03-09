@@ -1,9 +1,9 @@
 import { Table } from "@mantine/core";
 import { Props } from "./types";
-import { Status } from "../Status";
+import { Status } from "../Status/Status";
 import { formatTime } from "../../utils/helpers";
 
-import "./styles.scss";
+import "./Report.modul.scss";
 import { useCallback } from "react";
 import { useNavigate } from "react-router";
 import { RoutesEnum } from "../../AppRoutes";
@@ -14,6 +14,7 @@ export const Report: React.FC<Props> = ({
   sentTime,
   payload = "",
   status,
+  title,
 }) => {
   const formattedSendedTime = formatTime(sentTime);
 
@@ -33,13 +34,15 @@ export const Report: React.FC<Props> = ({
 
   return (
     <Table.Tr className="report-wrapper" onClick={handleClick}>
+       <Table.Td className="report-owner"><h4>{owner}</h4></Table.Td>
+      <Table.Td className="report-payload">
+        <h5>{title}</h5>
+        <p>{truncatedPayload}</p>
+      </Table.Td>
+      <Table.Td className="report-timestamp">{formattedSendedTime}</Table.Td>
       <Table.Td className="report-status">
         <Status status={status} />
       </Table.Td>
-      <Table.Td className="report-payload">
-        <h4>{owner}</h4>&nbsp;<p>{truncatedPayload}</p>
-      </Table.Td>
-      <Table.Td className="report-timestamp">{formattedSendedTime}</Table.Td>
     </Table.Tr>
   );
 };
