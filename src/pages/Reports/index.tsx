@@ -14,7 +14,7 @@ export const Reports = (props: IReportsProps) => {
   const { isUserReports } = props;
   // TODO: Add getting data from stomp
   const [reports, setReports] = useState<ReportModel[]>([]);
-  // TODO: use auth 
+  // TODO: use auth
   const userName = "Кабанец Владимир";
 
   // @todo: добавить бесконечный скролл
@@ -106,7 +106,7 @@ export const Reports = (props: IReportsProps) => {
             .filter(
               (report) =>
                 searchParams.statuses.length === 0 ||
-                searchParams.statuses.includes(report.status)
+                searchParams.statuses.includes(report.deliveryStatus)
             )
             .filter(
               (report) =>
