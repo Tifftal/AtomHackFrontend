@@ -1,5 +1,5 @@
 import { Table } from "@mantine/core";
-import { Props } from "../types";
+import { Props } from "./types";
 import { Status } from "../Status";
 import { formatTime } from "../../utils/helpers";
 
@@ -10,12 +10,13 @@ import { useNavigate } from "react-router";
 export const Report: React.FC<Props> = ({
   id,
   owner,
-  sendedTime,
+  sentTime,
   payload = "",
   status,
+  // @ts-ignore
   file = [],
 }) => {
-  const formattedSendedTime = formatTime(sendedTime);
+  const formattedSendedTime = formatTime(sentTime);
 
   const truncatedPayload = (() => {
     if (payload.length > 50) {
