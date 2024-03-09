@@ -11,8 +11,10 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 FROM deps as build
 ARG VITE_MARS_API
 ARG VITE_MARS_MINIO
+ARG VITE_SENDER_SERVICE
 ENV VITE_MARS_API=${VITE_MARS_API}
 ENV VITE_MARS_MINIO=${VITE_MARS_MINIO}
+ENV VITE_SENDER_SERVICE=${VITE_SENDER_SERVICE}
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
