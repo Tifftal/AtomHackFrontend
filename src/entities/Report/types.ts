@@ -22,6 +22,11 @@ export type ReportModel = {
   title: string;
 };
 
+export type ReportListModel = {
+  items: ReportModel[];
+  total: number;
+};
+
 export type ReportUpdateApi = {
   owner: string;
   payload: string;
