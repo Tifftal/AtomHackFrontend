@@ -18,6 +18,7 @@ import { getDetailed } from "../../entities/Report/api";
 import { ReportModel } from "../../entities/Report/types";
 import File from "../../entities/File";
 import { getNameAndType } from "./utils";
+import { BASE_MINIO_URL } from "../../shared/config";
 
 export const ReportDetailed = () => {
   const { id } = useParams();
@@ -120,14 +121,19 @@ export const ReportDetailed = () => {
           {report.files.map((file, index) => {
             const { fileName, type } = getNameAndType(file.path);
             return (
-              <File
-                key={index}
-                index={file.id}
-                name={fileName || ""}
-                isDraft={false}
-                type={type || ""}
-                DeleteFile={() => {}}
-              />
+              <a
+                href={BASE_MINIO_URL + file.path}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <File
+                  key={index}
+                  index={file.id}
+                  name={fileName || ""}
+                  isDraft={false}
+                  type={type || ""}
+                  DeleteFile={() => {}}
+                />
+              </a>
             );
           })}
         </>
