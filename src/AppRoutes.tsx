@@ -43,13 +43,13 @@ export const routes: IAppRoute[] = [
         path: RoutesEnum.AllReports,
         index: true,
         element: <Reports />,
-        icon: <IconMail size="1rem" stroke={1.5} key={RoutesEnum.AllReports} />,
+        icon: <IconMail size="18" stroke={1.5} key={RoutesEnum.AllReports} />,
       },
       {
         label: "Мои отчеты",
         path: RoutesEnum.MyReports,
         element: <Reports isUserReports={true} key={RoutesEnum.MyReports} />,
-        icon: <IconUser size="1rem" stroke={1.5} />,
+        icon: <IconUser size="18" stroke={1.5} />,
       },
       {
         path: RoutesEnum.Report + ":id",

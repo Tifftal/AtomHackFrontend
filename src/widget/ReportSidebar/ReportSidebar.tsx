@@ -24,7 +24,7 @@ export const ReportSidebar = () => {
       key={item.label}
       label={item.label}
       active={item.path === pathname}
-      rightSection={<IconChevronRight size="1rem" stroke={1.5} />}
+      rightSection={<IconChevronRight size="18" stroke={1.5} />}
       leftSection={item.icon}
       color="violet.6"
     />
