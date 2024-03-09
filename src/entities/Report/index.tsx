@@ -6,6 +6,7 @@ import { formatTime } from "../../utils/helpers";
 import "./styles.scss";
 import { useCallback } from "react";
 import { useNavigate } from "react-router";
+import { RoutesEnum } from "../../AppRoutes";
 
 export const Report: React.FC<Props> = ({
   id,
@@ -13,8 +14,6 @@ export const Report: React.FC<Props> = ({
   sentTime,
   payload = "",
   status,
-  // @ts-ignore
-  file = [],
 }) => {
   const formattedSendedTime = formatTime(sentTime);
 
@@ -29,7 +28,7 @@ export const Report: React.FC<Props> = ({
   const navigate = useNavigate();
 
   const handleClick = useCallback(() => {
-    navigate(`reports/${id}`);
+    navigate(RoutesEnum.Report + id);
   }, [navigate, id]);
 
   return (
