@@ -4,17 +4,19 @@ import { BASE_URL } from "../../shared/config";
 export const upload = async (options: { reportId: number; file: File }) => {
   const formData = new FormData();
   formData.append("file", options.file);
-  return apiInstance.post<{ id: number }>(
+  return apiInstance.put<{ id: number }>(
     `${BASE_URL}/api/v1/document/${options.reportId}/file`,
+    formData,
     {
-      data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     }
   );
 };
 
-export const remove = async (options: { reportId: number; file: File }) => {
+export const remove = async (options: { reportId: number; fileId: number }) => {
   return apiInstance.delete<null>(
-    `${BASE_URL}/api/v1/document/${options.reportId}/file`
+    `${BASE_URL}/api/v1/document/${options.reportId}/file/${options.fileId}`
   );
 };

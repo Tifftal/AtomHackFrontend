@@ -18,8 +18,11 @@ export const FileList: React.FC<Props> = ({ setFiles, reportId }) => {
       return;
     }
 
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-    newFiles.forEach((file) => upload({ reportId, file }));
+    newFiles.forEach((file) =>
+      upload({ reportId, file }).then((res) =>
+        setFiles((prevFiles) => [...prevFiles, { id: res.data.id, file }])
+      )
+    );
   };
 
   return (
