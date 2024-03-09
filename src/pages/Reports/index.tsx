@@ -1,4 +1,10 @@
-import { MultiSelect, Table, TextInput } from "@mantine/core";
+import {
+  Group,
+  MultiSelect,
+  Pagination,
+  Table,
+  TextInput,
+} from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Report } from "../../entities/Report";
 import { ReportDeliveryStatus, ReportModel } from "../../entities/Report/types";
@@ -12,32 +18,35 @@ const PAGE_SIZE = 10;
 
 export const Reports = (props: IReportsProps) => {
   const { isUserReports } = props;
-  // TODO: Add getting data from stomp
   const [reports, setReports] = useState<ReportModel[]>([]);
-  // TODO: use auth 
+  // TODO: use auth
   const userName = "Кабанец Владимир";
 
-  // @todo: добавить бесконечный скролл
-  const [currentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     getAll({ page: currentPage, pageSize: PAGE_SIZE, type: "formed" }).then(
-      (res) =>
+      (res) => {
         setReports(
           isUserReports
-            ? res.data.filter((report) => report.owner === userName)
-            : res.data
-        )
+            ? res.data.items.filter((report) => report.owner === userName)
+            : res.data.items
+        );
+        setTotal(res.data.total);
+      }
     );
 
     const intervalId = setInterval(() => {
       getAll({ page: currentPage, pageSize: PAGE_SIZE, type: "formed" }).then(
-        (res) =>
+        (res) => {
           setReports(
             isUserReports
-              ? res.data.filter((report) => report.owner === userName)
-              : res.data
-          )
+              ? res.data.items.filter((report) => report.owner === userName)
+              : res.data.items
+          );
+          setTotal(res.data.total);
+        }
       );
     }, 10000);
 
@@ -131,6 +140,23 @@ export const Reports = (props: IReportsProps) => {
             ))}
         </Table.Tbody>
       </Table>
+
+      {reports.length > 0 && (
+        <Pagination.Root
+          value={currentPage}
+          onChange={setCurrentPage}
+          total={total / PAGE_SIZE}
+          style={{ marginTop: "16px" }}
+        >
+          <Group gap={5} justify="center">
+            <Pagination.First />
+            <Pagination.Previous />
+            <Pagination.Items />
+            <Pagination.Next />
+            <Pagination.Last />
+          </Group>
+        </Pagination.Root>
+      )}
     </div>
   );
 };
