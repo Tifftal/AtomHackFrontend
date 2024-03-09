@@ -3,11 +3,12 @@ import { BASE_URL } from "../../shared/config";
 
 export const upload = async (options: { reportId: number; file: File }) => {
   const formData = new FormData();
-  formData.append("file", options.file, "test.name");
+  formData.append("file", options.file);
   return apiInstance.post<{ id: number }>(
     `${BASE_URL}/api/v1/document/${options.reportId}/file`,
     {
-      formData,
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
     }
   );
 };
