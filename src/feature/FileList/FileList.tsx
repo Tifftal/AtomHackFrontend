@@ -3,14 +3,24 @@ import { IconPaperclip } from "@tabler/icons-react";
 import { Props } from "./types";
 import { send } from "../../entities/Report/api";
 import { upload } from "../../entities/File/api";
+import { useState } from "react";
 
-export const FileList: React.FC<Props> = ({ setFiles, reportId }) => {
-  const handleSend = () => {
-    if (!reportId) {
-      return;
-    }
+export const FileList = (props: Props) => {
+  const {
+    isSendActive,
+    onCompleteHandler,
+    reportId,
+    setFiles,
+    beforeCompleteHandler,
+  } = props;
 
-    send({ id: reportId });
+  const [isSendButtonLoading, setIsSendButtonLoading] = useState(false);
+
+  const handleSend = async () => {
+    if (!reportId) return;
+    setIsSendButtonLoading(true);
+    await beforeCompleteHandler();
+    send({ id: reportId }).finally(() => onCompleteHandler());
   };
 
   const handleFileUpload = (newFiles: File[]) => {
@@ -28,11 +38,21 @@ export const FileList: React.FC<Props> = ({ setFiles, reportId }) => {
   return (
     <div className="footer-report">
       <div className="group-btn">
-        <Button variant="filled" color="violet" onClick={handleSend}>
+        <Button
+          loading={isSendButtonLoading}
+          variant="filled"
+          color="violet"
+          onClick={handleSend}
+          disabled={!isSendActive}
+        >
           Отправить
         </Button>
         <Group justify="center">
-          <FileButton onChange={handleFileUpload} multiple>
+          <FileButton
+            disabled={isSendButtonLoading}
+            onChange={handleFileUpload}
+            multiple
+          >
             {(props) => (
               <ActionIcon
                 variant="transparent"

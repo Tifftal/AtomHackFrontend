@@ -1,8 +1,10 @@
 import { RouteObject } from "react-router-dom";
 import { MainLayout } from "./widget/MainLayout";
 import { IconMail, IconUser } from "@tabler/icons-react";
-import { Reports } from "./pages/Reports";
+import { Reports } from "./pages/Reports/Reports";
 import { ReportDetailed } from "./pages/ReportDetailed";
+import { AuthPage } from "./pages/Auth";
+import { NotFoundPage } from "./pages/NotFound";
 
 /**
  * Маршруты приложения
@@ -12,6 +14,7 @@ export enum RoutesEnum {
   AllReports = "/",
   MyReports = "/my/reports/",
   Report = "/reports/",
+  Login = "/login",
 }
 
 export interface IAppRoute {
@@ -57,14 +60,14 @@ export const routes: IAppRoute[] = [
       },
     ],
   },
-  /*  {
-    path: "/auth",
+  {
+    path: RoutesEnum.Login,
     element: <AuthPage />,
   },
   {
     path: "*",
-    element: <ErrorPage />,
-  }, */
+    element: <NotFoundPage />,
+  },
 ];
 
 export const realRoutes: RouteObject[] = convertRoutes(routes);

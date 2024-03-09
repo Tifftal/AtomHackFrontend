@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import TurndownService from "turndown";
 import TextEditor from "../../feature/TextEditor";
 import { useCallback, useEffect, useState } from "react";
-import { Button, Text } from "@mantine/core";
+import { ActionIcon, Text } from "@mantine/core";
 import { IconChevronLeft, IconDownload } from "@tabler/icons-react";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -18,6 +18,7 @@ import { getDetailed } from "../../entities/Report/api";
 import { ReportModel } from "../../entities/Report/types";
 import File from "../../entities/File";
 import { getNameAndType } from "./utils";
+import { format } from "date-fns";
 
 export const ReportDetailed = () => {
   const { id } = useParams();
@@ -83,38 +84,37 @@ export const ReportDetailed = () => {
               cursor="pointer"
             />
 
-            <Text
-              tt="uppercase"
-              fw={700}
-              variant="gradient"
-              gradient={{ from: "blue", to: "cyan" }}
-            >
-              {report.owner}
-            </Text>
-
-            <Button
-              leftSection={<IconDownload size={20} />}
-              variant="outline"
-              color="blue"
-              onClick={handleSave}
-            >
-              Сохранить
-            </Button>
-
-            <div style={{ textAlign: "end" }}>
-              <Text size="sm" fw={500}>
-                Отправлено: {report.sentTime.toLocaleString()}
-              </Text>
-
-              {report.receivedTime ? (
-                <Text size="sm">
-                  Доставлено: {report.receivedTime.toLocaleString()}
+            <div className={s.root__toolbar__title}>
+              <p>{report.owner}:</p>
+              <h1>{report.title}</h1>
+            </div>
+            <div className={s.root__toolbar__btn}>
+              <div style={{ textAlign: "end" }}>
+                <Text size="sm" fw={500}>
+                  Отправлено: {format(report.sentTime, "HH:mm dd.MM.yyyy")}
                 </Text>
-              ) : (
-                <Text c="dimmed" size="sm">
-                  Не доставлено
-                </Text>
-              )}
+
+                {report.receivedTime ? (
+                  <Text size="sm" fw={500}>
+                    Доставлено:{" "}
+                    {format(report.receivedTime, "HH:mm dd.MM.yyyy")}
+                  </Text>
+                ) : (
+                  <Text c="red" size="sm" fw={500}>
+                    Не доставлено
+                  </Text>
+                )}
+              </div>
+              <ActionIcon
+                variant="filled"
+                aria-label="Сохранить"
+                onClick={handleSave}
+              >
+                <IconDownload
+                  style={{ width: "80%", height: "80%" }}
+                  stroke={1.8}
+                />
+              </ActionIcon>
             </div>
           </div>
           {report.files.map((file, index) => {

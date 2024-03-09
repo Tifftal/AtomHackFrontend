@@ -3,7 +3,6 @@ export type Props = {
 };
 
 export type FormFields = {
-  owner: string;
   title: string;
   payload: string;
 };
