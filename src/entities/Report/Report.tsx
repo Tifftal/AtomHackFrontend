@@ -1,8 +1,8 @@
 import { Table } from "@mantine/core";
 import { Props } from "./types";
 import { Status } from "../Status/Status";
-import { formatTime } from "../../utils/helpers";
-
+import { format } from 'date-fns';
+import { ru } from 'date-fns/locale';
 import "./Report.modul.scss";
 import { useCallback } from "react";
 import { useNavigate } from "react-router";
@@ -16,8 +16,6 @@ export const Report: React.FC<Props> = ({
   status,
   title,
 }) => {
-  const formattedSendedTime = formatTime(sentTime);
-
   const truncatedPayload = (() => {
     if (payload.length > 50) {
       return payload.substring(0, 50) + "...";
@@ -39,7 +37,7 @@ export const Report: React.FC<Props> = ({
         <h5>{title}</h5>
         <p>{truncatedPayload}</p>
       </Table.Td>
-      <Table.Td className="report-timestamp">{formattedSendedTime}</Table.Td>
+      <Table.Td className="report-timestamp">{format(sentTime, 'd LLL', { locale: ru })}</Table.Td>
       <Table.Td className="report-status">
         <Status status={status} />
       </Table.Td>
