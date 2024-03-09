@@ -18,8 +18,7 @@ import { getDetailed } from "../../entities/Report/api";
 import { ReportModel } from "../../entities/Report/types";
 import File from "../../entities/File";
 import { getNameAndType } from "./utils";
-import { BASE_MINIO_URL } from "../../shared/config";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 export const ReportDetailed = () => {
   const { id } = useParams();
@@ -86,20 +85,22 @@ export const ReportDetailed = () => {
             />
 
             <div className={s.root__toolbar__title}>
-              <p>{report.owner}:</p><h1>{report.title}</h1>
+              <p>{report.owner}:</p>
+              <h1>{report.title}</h1>
             </div>
             <div className={s.root__toolbar__btn}>
               <div style={{ textAlign: "end" }}>
                 <Text size="sm" fw={500}>
-                  Отправлено: {format(report.sentTime, 'HH:mm dd.MM.yyyy')}
+                  Отправлено: {format(report.sentTime, "HH:mm dd.MM.yyyy")}
                 </Text>
 
                 {report.receivedTime ? (
                   <Text size="sm" fw={500}>
-                    Доставлено: {format(report.receivedTime, 'HH:mm dd.MM.yyyy')}
+                    Доставлено:{" "}
+                    {format(report.receivedTime, "HH:mm dd.MM.yyyy")}
                   </Text>
                 ) : (
-                  <Text c='red' size="sm" fw={500}>
+                  <Text c="red" size="sm" fw={500}>
                     Не доставлено
                   </Text>
                 )}
@@ -109,7 +110,10 @@ export const ReportDetailed = () => {
                 aria-label="Сохранить"
                 onClick={handleSave}
               >
-                <IconDownload style={{ width: '80%', height: '80%' }} stroke={1.8} />
+                <IconDownload
+                  style={{ width: "80%", height: "80%" }}
+                  stroke={1.8}
+                />
               </ActionIcon>
             </div>
           </div>
@@ -117,8 +121,9 @@ export const ReportDetailed = () => {
             const { fileName, type } = getNameAndType(file.path);
             return (
               <a
-                href={BASE_MINIO_URL + file.path}
+                href={file.path}
                 style={{ textDecoration: "none", color: "inherit" }}
+                download
               >
                 <File
                   key={index}
@@ -126,7 +131,7 @@ export const ReportDetailed = () => {
                   name={fileName || ""}
                   isDraft={false}
                   type={type || ""}
-                  DeleteFile={() => { }}
+                  DeleteFile={() => {}}
                 />
               </a>
             );
