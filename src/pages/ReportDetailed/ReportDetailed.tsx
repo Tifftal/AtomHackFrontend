@@ -90,18 +90,9 @@ export const ReportDetailed = () => {
               <Text size="sm" fw={500}>
                 Отправлено: {report.sentTime.toLocaleString()}
               </Text>
-
-              {report.receivedTime ? (
-                <Text size="sm">
-                  Доставлено: {report.receivedTime.toLocaleString()}
-                </Text>
-              ) : (
-                <Text c="dimmed" size="sm">
-                  Не доставлено
-                </Text>
-                {report.recievedTime ? (
+                {report.receivedTime ? (
                   <Text size="sm">
-                    Доставлено: {report.recievedTime.toLocaleString()}
+                    Доставлено: {report.receivedTime.toLocaleString()}
                   </Text>
                 ) : (
                   <Text c="dimmed" size="sm">

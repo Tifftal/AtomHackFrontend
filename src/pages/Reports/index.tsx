@@ -96,7 +96,7 @@ export const Reports = () => {
               .filter(
                 (report) =>
                   searchParams.statuses.length === 0 ||
-                  searchParams.statuses.includes(report.status)
+                  searchParams.statuses.includes(report.deliveryStatus)
               )
               .filter(
                 (report) =>
