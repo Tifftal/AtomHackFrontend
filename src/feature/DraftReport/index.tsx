@@ -32,6 +32,14 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
     title: "",
     payload: "",
   });
+  const isText: boolean =
+    fields.payload &&
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    JSON.parse(fields.payload).content.map((item: any) => item.content)[0];
+  const isFieldsDone: boolean =
+    !!fields.owner.trim() &&
+    !!fields.title.trim() &&
+    (isText || !!files.length);
 
   useEffect(() => {
     create().then((res) => setDraftId(res.data.id));
@@ -185,7 +193,12 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
               ))}
             </div>
           )}
-          <FileList setFiles={setFiles} reportId={draftId} />
+          <FileList
+            setFiles={setFiles}
+            reportId={draftId}
+            onCompleteHandler={() => toggleReport(false)}
+            isSendActive={isFieldsDone}
+          />
         </>
       )}
     </Dialog>
