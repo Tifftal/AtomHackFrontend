@@ -4,10 +4,9 @@ import { Report } from "../../entities/Report";
 import { ReportDeliveryStatus, ReportModel } from "../../entities/Report/types";
 import { SearchParams } from "../../entities/Report/types";
 import { ReportSidebar } from "../../widget/ReportSidebar";
-import useWebSocket from "react-use-websocket";
-import { BASE_WS_URL } from "../../shared/config";
 
 import "./index.scss";
+import { getAll } from "../../entities/Report/api";
 
 const PAGE_SIZE = 10;
 
@@ -17,29 +16,26 @@ export const Reports = () => {
   const [reports, setReports] = useState<ReportModel[]>([]);
 
   // @todo: добавить бесконечный скролл
-  const [currentPage] = useState(0);
+  const [currentPage] = useState(1);
+
+  useEffect(() => {
+    getAll({ page: currentPage, pageSize: PAGE_SIZE, type: "formed" }).then(
+      (res) => setReports(res.data)
+    );
+
+    const intervalId = setInterval(() => {
+      getAll({ page: currentPage, pageSize: PAGE_SIZE, type: "formed" }).then(
+        (res) => setReports(res.data)
+      );
+    }, 10000);
+
+    return () => clearInterval(intervalId);
+  }, [currentPage]);
 
   const [searchParams, setSearchParams] = useState<SearchParams>({
     statuses: [],
     search: "",
   });
-
-  // const { sendMessage, lastMessage, readyState } = useWebSocket(
-  //   `${BASE_WS_URL}/ws/v1/document/formed/?page=1&pageSize=10`
-  // );
-
-  // useEffect(() => {
-  //   if (lastMessage !== null) {
-  //     console.log(lastMessage);
-  //   }
-  // }, [lastMessage]);
-
-  useEffect(() => {
-    const socket = new WebSocket(
-      `${BASE_WS_URL}/ws/v1/document/formed?page=1&pageSize=10`
-    );
-    socket.addEventListener("open", () => console.log("открыт!"));
-  }, []);
 
   const handleStatusChange = (statuses: string[]) => {
     const newStatuses: ReportDeliveryStatus[] = [];

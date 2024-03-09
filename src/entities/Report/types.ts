@@ -16,7 +16,7 @@ export type ReportModel = {
   owner: string;
   sentTime: Date;
   receivedTime?: Date;
-  payload?: string;
+  payload: string;
   status: ReportDeliveryStatus;
   file?: File[];
   title: string;
