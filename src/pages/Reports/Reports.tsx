@@ -125,7 +125,6 @@ export const Reports = (props: IReportsProps) => {
                 owner={report.owner}
                 sentTime={new Date(report.sentTime)}
                 receivedTime={new Date(report.receivedTime || "")}
-                payload={report.payload}
                 status={report.status}
                 file={report.file}
                 id={report.id}

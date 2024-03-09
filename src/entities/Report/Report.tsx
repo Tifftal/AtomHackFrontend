@@ -12,18 +12,9 @@ export const Report: React.FC<Props> = ({
   id,
   owner,
   sentTime,
-  payload = "",
   status,
   title,
 }) => {
-  const truncatedPayload = (() => {
-    if (payload.length > 50) {
-      return payload.substring(0, 50) + "...";
-    }
-
-    return payload;
-  })();
-
   const navigate = useNavigate();
 
   const handleClick = useCallback(() => {
@@ -32,10 +23,9 @@ export const Report: React.FC<Props> = ({
 
   return (
     <Table.Tr className="report-wrapper" onClick={handleClick}>
-       <Table.Td className="report-owner"><h4>{owner}</h4></Table.Td>
+      <Table.Td className="report-owner"><h4>{owner}</h4></Table.Td>
       <Table.Td className="report-payload">
         <h5>{title}</h5>
-        <p>{truncatedPayload}</p>
       </Table.Td>
       <Table.Td className="report-timestamp">{format(sentTime, 'd LLL', { locale: ru })}</Table.Td>
       <Table.Td className="report-status">
