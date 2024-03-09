@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import TurndownService from "turndown";
 import TextEditor from "../../feature/TextEditor";
-import { ReportSidebar } from "../../widget/ReportSidebar";
 import { useCallback, useEffect, useState } from "react";
 import { Button, Text } from "@mantine/core";
 import { IconChevronLeft, IconDownload } from "@tabler/icons-react";
@@ -62,7 +61,7 @@ export const ReportDetailed = () => {
     const markdownContent = turndownService.turndown(htmlContent);
 
     saveMarkdownFile(
-      `${report.owner}_${report.sentTime.getTime()}`,
+      `${report.owner}_${(new Date(report.sentTime)).getTime()}`,
       markdownContent
     );
   }, [editor, report]);

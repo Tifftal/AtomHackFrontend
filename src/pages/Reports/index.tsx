@@ -12,7 +12,7 @@ const PAGE_SIZE = 10;
 
 export const Reports = () => {
   // TODO: Add getting data from stomp
-  const [activeReport, setActiveReport] = useState<string>("");
+  const [, setActiveReport] = useState<string>("");
   const [reports, setReports] = useState<ReportModel[]>([]);
 
   // @todo: добавить бесконечный скролл
@@ -112,7 +112,7 @@ export const Reports = () => {
                   key={report.id}
                   owner={report.owner}
                   sentTime={new Date(report.sentTime)}
-                  receivedTime={new Date(report.receivedTime)}
+                  receivedTime={new Date(report.receivedTime || "")}
                   payload={report.payload}
                   status={report.status}
                   file={report.file}

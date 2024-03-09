@@ -1,6 +1,5 @@
 import {
   IconMail,
-  IconNotes,
   IconChevronRight,
   IconUser,
 } from "@tabler/icons-react";
