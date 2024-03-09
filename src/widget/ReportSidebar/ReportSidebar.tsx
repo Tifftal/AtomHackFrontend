@@ -1,31 +1,31 @@
 import { ActionIcon, Button, NavLink } from "@mantine/core";
-import { IconPencilPlus, IconRefresh } from "@tabler/icons-react";
+import {
+  IconChevronRight,
+  IconPencilPlus,
+  IconRefresh,
+} from "@tabler/icons-react";
 import DraftReport from "../../feature/DraftReport";
 import { useState } from "react";
-import { NAME, NAV_LINK_LIST} from "./config";
 
 import s from "./ReportSidebar.module.scss";
-import { Props } from "./types";
+import { smallRoutes as AppRoutes } from "../../AppRoutes";
+import { Link, useLocation } from "react-router-dom";
 
-export const ReportSidebar: React.FC<Props> = ({ setActiveReport }) => {
+export const ReportSidebar = () => {
   const [isDraftOpen, setIsDraftOpen] = useState(false);
-  const [active, setActive] = useState(0);
 
-  const handleSetActiveReport = (index: number) => {
-    setActive(index)
-    index === 0 ? setActiveReport("") : setActiveReport(NAME)
-  }
+  const { pathname } = useLocation();
 
-  const items = NAV_LINK_LIST.map((item, index) => (
+  const items = AppRoutes.map((item) => (
     <NavLink
+      component={Link}
+      to={item.path}
       className="custom-navlink"
-      href={`#${item.label}`}
       key={item.label}
-      active={index === active}
       label={item.label}
-      rightSection={item.rightSection}
-      leftSection={<item.icon size="1rem" stroke={1.5} />}
-      onClick={() => handleSetActiveReport(index)}
+      active={item.path === pathname}
+      rightSection={<IconChevronRight size="1rem" stroke={1.5} />}
+      leftSection={item.icon}
       color="violet.6"
     />
   ));

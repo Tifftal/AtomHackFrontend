@@ -1,31 +1,20 @@
-.reports {
-  display: flex;
-  flex-direction: row;
-  border-radius: 5px;
-  background-color: white;
-  box-shadow: 0 0 5px rgba(95, 61, 196, 0.2);
+.reports-table {
+  padding: 2vh;
+  width: 76vw;
   height: 96vh;
-  max-height: 96vh;
-  position: relative;
+  overflow-y: auto;
 
-  .reports-table {
-    padding: 2vh;
-    width: 76vw;
-    height: 96vh;
-    overflow-y: auto;
+  &-filters {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
 
-    &-filters {
-      display: flex;
-      flex-direction: row;
-      gap: 10px;
+    &__status {
+      width: 35%;
+    }
 
-      &__status {
-        width: 35%;
-      }
-
-      &__search {
-        width: 65%;
-      }
+    &__search {
+      width: 65%;
     }
   }
 }

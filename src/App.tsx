@@ -2,19 +2,18 @@ import "@mantine/core/styles.css";
 import "@mantine/tiptap/styles.css";
 import "./App.css";
 import { MantineProvider } from "@mantine/core";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Reports } from "./pages/Reports";
-import { ReportDetailed } from "./pages/ReportDetailed";
+import {
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
+import { realRoutes } from "./AppRoutes";
 
 function App() {
+  const router = createBrowserRouter(realRoutes);
+
   return (
     <MantineProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Reports />} />
-          <Route path="/reports/:id" element={<ReportDetailed />} />
-        </Routes>
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </MantineProvider>
   );
 }
