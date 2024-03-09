@@ -41,6 +41,7 @@ export type Props = {
   payload?: string;
   status: ReportDeliveryStatus;
   file?: File[];
+  title: string;
 };
 
 export type SearchParams = {

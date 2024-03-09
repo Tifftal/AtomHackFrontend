@@ -103,13 +103,6 @@ export const Reports = (props: IReportsProps) => {
         ></TextInput>
       </div>
       <Table highlightOnHover>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Статус</Table.Th>
-            <Table.Th>Отправитель</Table.Th>
-            <Table.Th>Время отправки</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
         <Table.Tbody>
           {reports
             .filter(
@@ -136,6 +129,7 @@ export const Reports = (props: IReportsProps) => {
                 status={report.status}
                 file={report.file}
                 id={report.id}
+                title={report.title}
               />
             ))}
         </Table.Tbody>
