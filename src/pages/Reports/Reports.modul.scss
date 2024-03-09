@@ -1,13 +1,8 @@
 .reports-table {
-  position: relative;
-  // background-color: yellow;
   padding: 2vh;
   width: 76vw;
   height: 96vh;
   overflow-y: auto;
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: flex-start;
 
   &-filters {
     display: flex;
@@ -24,7 +19,6 @@
   }
 
   .mantine-Pagination-root {
-    // background-color: red;
     position: fixed;
     bottom: 2vh;
     right: 2vw;
