@@ -19,6 +19,7 @@ import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
 import { create, update } from "../../entities/Report/api";
 import { remove } from "../../entities/File/api";
+import { useAuth } from "../../utils/hooks/useAuth";
 
 const DraftReport: React.FC<Props> = ({ toggleReport }) => {
   const [files, setFiles] = useState<FileField[]>([]);
@@ -28,18 +29,18 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
   const [draftId, setDraftId] = useState<number | null>(null);
 
   const [fields, setFields] = useState<FormFields>({
-    owner: "",
     title: "",
     payload: "",
   });
+
+  const { user } = useAuth();
+
   const isText: boolean =
     fields.payload &&
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     JSON.parse(fields.payload).content.map((item: any) => item.content)[0];
   const isFieldsDone: boolean =
-    !!fields.owner.trim() &&
-    !!fields.title.trim() &&
-    (isText || !!files.length);
+    !!fields.title.trim() && (isText || !!files.length);
 
   useEffect(() => {
     create().then((res) => setDraftId(res.data.id));
@@ -65,13 +66,17 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
     setFullscreen((state) => !state);
   };
 
-  const handleClose = () => {
+  const saveReport = async () => {
     if (!draftId) {
       return;
     }
-
     toggleReport((state) => !state);
-    update({ ...fields, id: draftId });
+    await update({ ...fields, id: draftId, owner: user.name });
+  };
+
+  const handleClose = () => {
+    saveReport();
+    toggleReport((state) => !state);
   };
 
   const DeleteFile = (index: number) => {
@@ -164,13 +169,19 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
       </Group>
       {!isCollapsed && (
         <>
-          <TextInput
+          {/* <TextInput
             label="От кого"
             withAsterisk
             placeholder="Введите ФИО"
-            value={fields.owner}
-            onChange={(e) => handleChange("owner", e)}
-          />
+            value={user.name}
+            disabled
+          /> */}
+          {/* <div className="owner">
+            <Text c="dimmed" size="sm" fw={500}>
+              От кого
+            </Text>
+            <Text size="xl" >{user.name}</Text>
+          </div> */}
           <TextInput
             label="Заголовок"
             withAsterisk
@@ -197,6 +208,7 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
             setFiles={setFiles}
             reportId={draftId}
             onCompleteHandler={() => toggleReport(false)}
+            beforeCompleteHandler={saveReport}
             isSendActive={isFieldsDone}
           />
         </>

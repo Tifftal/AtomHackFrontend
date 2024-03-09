@@ -1,0 +1,35 @@
+.root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 3px #ccc;
+    background-color: white;
+    gap: 20px;
+    width: 50%;
+}
+
+.error {
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+@media screen and (max-width: 768px) {
+    .form {
+        width: 80%;
+    }
+    
+}
+
+@media screen and (max-width: 400px){
+    .form {
+        width: 90%;
+    }
+}

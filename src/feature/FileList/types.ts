@@ -5,4 +5,5 @@ export type Props = {
   reportId: number | null;
   onCompleteHandler: () => void;
   isSendActive: boolean;
+  beforeCompleteHandler: () => Promise<void>;
 };

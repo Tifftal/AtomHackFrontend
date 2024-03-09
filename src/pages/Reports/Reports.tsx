@@ -13,6 +13,7 @@ import { SearchParams } from "../../entities/Report/types";
 import "./Reports.modul.scss";
 import { getAll } from "../../entities/Report/api";
 import { IReportsProps } from "./types";
+import { useAuth } from "../../utils/hooks/useAuth";
 
 const PAGE_SIZE = 10;
 
@@ -20,7 +21,7 @@ export const Reports = (props: IReportsProps) => {
   const { isUserReports } = props;
   const [reports, setReports] = useState<ReportModel[]>([]);
   // TODO: use auth
-  const userName = "Кабанец Владимир";
+  const { user } = useAuth();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -30,7 +31,7 @@ export const Reports = (props: IReportsProps) => {
       (res) => {
         setReports(
           isUserReports
-            ? res.data.items.filter((report) => report.owner === userName)
+            ? res.data.items.filter((report) => report.owner === user.name)
             : res.data.items
         );
         setTotal(res.data.total);
@@ -42,7 +43,7 @@ export const Reports = (props: IReportsProps) => {
         (res) => {
           setReports(
             isUserReports
-              ? res.data.items.filter((report) => report.owner === userName)
+              ? res.data.items.filter((report) => report.owner === user.name)
               : res.data.items
           );
           setTotal(res.data.total);
@@ -51,7 +52,7 @@ export const Reports = (props: IReportsProps) => {
     }, 10000);
 
     return () => clearInterval(intervalId);
-  }, [currentPage, isUserReports]);
+  }, [currentPage, isUserReports, user]);
 
   const [searchParams, setSearchParams] = useState<SearchParams>({
     statuses: [],

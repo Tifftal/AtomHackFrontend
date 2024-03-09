@@ -6,15 +6,20 @@ import { upload } from "../../entities/File/api";
 import { useState } from "react";
 
 export const FileList = (props: Props) => {
-  const { isSendActive, onCompleteHandler, reportId, setFiles } = props;
+  const {
+    isSendActive,
+    onCompleteHandler,
+    reportId,
+    setFiles,
+    beforeCompleteHandler,
+  } = props;
 
   const [isSendButtonLoading, setIsSendButtonLoading] = useState(false);
 
-  const handleSend = () => {
-    if (!reportId) {
-      return;
-    }
+  const handleSend = async () => {
+    if (!reportId) return;
     setIsSendButtonLoading(true);
+    await beforeCompleteHandler();
     send({ id: reportId }).finally(() => onCompleteHandler());
   };
 
