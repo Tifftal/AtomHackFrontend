@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import File from "../../entities/File";
 import "./index.scss";
 import { FileList } from "../FileList/FileList";
-import { FormFields, Props } from "./types";
+import { FileField, FormFields, Props } from "./types";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
@@ -18,9 +18,10 @@ import Subscript from "@tiptap/extension-subscript";
 import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
 import { create, update } from "../../entities/Report/api";
+import { remove } from "../../entities/File/api";
 
 const DraftReport: React.FC<Props> = ({ toggleReport }) => {
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<FileField[]>([]);
   const [isCollapsed, setCollapsed] = useState(false);
   const [isFullscreen, setFullscreen] = useState(false);
 
@@ -66,8 +67,15 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
   };
 
   const DeleteFile = (index: number) => {
+    if (!draftId) {
+      return;
+    }
+
+    const fileId = files[index].id;
     const updatedFiles = files.filter((_, i) => i !== index);
     setFiles(updatedFiles);
+
+    remove({ reportId: draftId, fileId });
   };
 
   const draftReportClassName = [
@@ -97,35 +105,49 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
   });
 
   return (
-    <Dialog className={draftReportClassName} opened={true} position={draftReportClassName === "draft-report draft-report__fullscreen" ? { bottom: "2vh", right: "2vw" } : draftReportClassName === "draft-report draft-report__collapsed" ? { bottom: "0", right: "2vw" } : { bottom: "2vh", right: "2vw" }}>
+    <Dialog
+      className={draftReportClassName}
+      opened={true}
+      position={
+        draftReportClassName === "draft-report draft-report__fullscreen"
+          ? { bottom: "2vh", right: "2vw" }
+          : draftReportClassName === "draft-report draft-report__collapsed"
+          ? { bottom: "0", right: "2vw" }
+          : { bottom: "2vh", right: "2vw" }
+      }
+    >
       <Group justify="space-between">
-        <Text size="lg" fw={600}>Новый отчет</Text>
+        <Text size="lg" fw={600}>
+          Новый отчет
+        </Text>
         <Button.Group>
           <Button
             color="violet"
             size="compact-sm"
             onClick={handleCollapseWindow}
           >
-            {
-              draftReportClassName === "draft-report" ?
-                <IoChevronDownOutline size={"18"} /> :
-                draftReportClassName === "draft-report draft-report__fullscreen" ?
-                  <IoChevronDownOutline size={"18"} /> :
-                  <MdFullscreen size={"12"} />
-            }
+            {draftReportClassName === "draft-report" ? (
+              <IoChevronDownOutline size={"18"} />
+            ) : draftReportClassName ===
+              "draft-report draft-report__fullscreen" ? (
+              <IoChevronDownOutline size={"18"} />
+            ) : (
+              <MdFullscreen size={"12"} />
+            )}
           </Button>
           <Button
             color="violet"
             size="compact-sm"
             onClick={handleFullscreenWindow}
           >
-            {
-              draftReportClassName === "draft-report" ?
-                <MdFullscreen size={"18"} /> :
-                draftReportClassName === "draft-report draft-report__fullscreen" ?
-                  <MdFullscreen size={"12"} /> :
-                  <MdFullscreen size={"18"} />
-            }
+            {draftReportClassName === "draft-report" ? (
+              <MdFullscreen size={"18"} />
+            ) : draftReportClassName ===
+              "draft-report draft-report__fullscreen" ? (
+              <MdFullscreen size={"12"} />
+            ) : (
+              <MdFullscreen size={"18"} />
+            )}
           </Button>
           <Button color="red" size="compact-sm" onClick={handleClose}>
             <IoMdClose size={"18"} />
@@ -151,13 +173,13 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
           <TextEditor editor={editor} />
           {files.length > 0 && (
             <div className="files">
-              {files.map((file, index) => (
+              {files.map((item, index) => (
                 <File
                   key={index}
                   index={index}
-                  name={file.name}
+                  name={item.file.name}
                   isDraft={true}
-                  type={file.type}
+                  type={item.file.type}
                   DeleteFile={DeleteFile}
                 />
               ))}
