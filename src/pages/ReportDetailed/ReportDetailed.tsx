@@ -18,7 +18,6 @@ import { getDetailed } from "../../entities/Report/api";
 import { ReportModel } from "../../entities/Report/types";
 import File from "../../entities/File";
 import { getNameAndType } from "./utils";
-import { BASE_MINIO_URL } from "../../shared/config";
 
 export const ReportDetailed = () => {
   const { id } = useParams();
@@ -122,8 +121,9 @@ export const ReportDetailed = () => {
             const { fileName, type } = getNameAndType(file.path);
             return (
               <a
-                href={BASE_MINIO_URL + file.path}
+                href={file.path}
                 style={{ textDecoration: "none", color: "inherit" }}
+                download
               >
                 <File
                   key={index}
