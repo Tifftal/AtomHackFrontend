@@ -3,7 +3,7 @@ import { Props } from "./types";
 import { Status } from "../Status";
 import { formatTime } from "../../utils/helpers";
 
-import "./styles.scss";
+import "./Report.modul.scss";
 import { useCallback } from "react";
 import { useNavigate } from "react-router";
 import { RoutesEnum } from "../../AppRoutes";

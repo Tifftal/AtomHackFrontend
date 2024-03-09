@@ -1,7 +1,7 @@
 import { RouteObject } from "react-router-dom";
 import { MainLayout } from "./widget/MainLayout";
 import { IconMail, IconUser } from "@tabler/icons-react";
-import { Reports } from "./pages/Reports";
+import { Reports } from "./pages/Reports/Reports";
 import { ReportDetailed } from "./pages/ReportDetailed";
 
 /**

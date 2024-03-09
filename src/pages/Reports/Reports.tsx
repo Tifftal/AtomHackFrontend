@@ -1,10 +1,10 @@
 import { MultiSelect, Table, TextInput } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { Report } from "../../entities/Report";
+import { Report } from "../../entities/Report/Report";
 import { ReportDeliveryStatus, ReportModel } from "../../entities/Report/types";
 import { SearchParams } from "../../entities/Report/types";
 
-import "./index.scss";
+import "./Reports.modul.scss";
 import { getAll } from "../../entities/Report/api";
 import { IReportsProps } from "./types";
 
