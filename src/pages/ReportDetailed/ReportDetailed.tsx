@@ -2,8 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import TurndownService from "turndown";
 import TextEditor from "../../feature/TextEditor";
 import { ReportSidebar } from "../../widget/ReportSidebar";
-import { REPORTS_MOCK } from "../../constants/mocks";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Text } from "@mantine/core";
 import { IconChevronLeft, IconDownload } from "@tabler/icons-react";
 import { useEditor } from "@tiptap/react";
@@ -19,13 +18,14 @@ import s from "./ReportDetailed.module.scss";
 import { saveMarkdownFile } from "../../utils/files";
 import File from "../../entities/File";
 import { getNameAndType } from "./utils";
-
+import { getDetailed } from "../../entities/Report/api";
+import { ReportModel } from "../../entities/Report/types";
 
 export const ReportDetailed = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const report = REPORTS_MOCK.find((report) => report.id === Number(id));
+  const [report, setReport] = useState<ReportModel | null>(null);
 
   const editor = useEditor({
     extensions: [
@@ -38,8 +38,18 @@ export const ReportDetailed = () => {
       TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
     editable: false,
-    content: report ? JSON.parse(report.payload) : "",
   });
+
+  useEffect(() => {
+    if (!id || !editor) {
+      return;
+    }
+
+    getDetailed({ id: Number(id) }).then((res) => {
+      setReport(res.data);
+      editor.commands.setContent(JSON.parse(res.data.payload));
+    });
+  }, [id, editor]);
 
   const handleSave = useCallback(() => {
     if (!report || !editor) {
@@ -52,7 +62,7 @@ export const ReportDetailed = () => {
     const markdownContent = turndownService.turndown(htmlContent);
 
     saveMarkdownFile(
-      `${report.owner}_${report.sendedTime.getTime()}`,
+      `${report.owner}_${report.sentTime.getTime()}`,
       markdownContent
     );
   }, [editor, report]);
@@ -64,7 +74,7 @@ export const ReportDetailed = () => {
 
   return (
     <div className={s.root}>
-      <ReportSidebar />
+      {/* <ReportSidebar /> */}
       <TextEditor
         editor={editor}
         customToolbar={
@@ -76,30 +86,19 @@ export const ReportDetailed = () => {
                 onClick={() => navigate(-1)}
                 cursor="pointer"
               />
-
-              <Text
-                tt="uppercase"
-                fw={700}
-                variant="gradient"
-                gradient={{ from: "blue", to: "cyan" }}
-              >
-                {report.owner}
+            <div style={{ textAlign: "end" }}>
+              <Text size="sm" fw={500}>
+                Отправлено: {report.sentTime.toLocaleString()}
               </Text>
 
-              <Button
-                leftSection={<IconDownload size={20} />}
-                variant="outline"
-                color="blue"
-                onClick={handleSave}
-              >
-                Сохранить
-              </Button>
-
-              <div style={{ textAlign: "end" }}>
-                <Text size="sm" fw={500}>
-                  Отправлено: {report.sendedTime.toLocaleString()}
+              {report.receivedTime ? (
+                <Text size="sm">
+                  Доставлено: {report.receivedTime.toLocaleString()}
                 </Text>
-
+              ) : (
+                <Text c="dimmed" size="sm">
+                  Не доставлено
+                </Text>
                 {report.recievedTime ? (
                   <Text size="sm">
                     Доставлено: {report.recievedTime.toLocaleString()}

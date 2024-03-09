@@ -3,11 +3,11 @@ import { Button, Dialog, Group, TextInput, Text } from "@mantine/core";
 import { MdFullscreen } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import { IoChevronDownOutline } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import File from "../../entities/File";
 import "./index.scss";
 import { FileList } from "../FileList/FileList";
-import { Props } from "./types";
+import { FormFields, Props } from "./types";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
@@ -17,11 +17,34 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Subscript from "@tiptap/extension-subscript";
 import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
+import { create, update } from "../../entities/Report/api";
 
 const DraftReport: React.FC<Props> = ({ toggleReport }) => {
   const [files, setFiles] = useState<File[]>([]);
   const [isCollapsed, setCollapsed] = useState(false);
   const [isFullscreen, setFullscreen] = useState(false);
+
+  const [draftId, setDraftId] = useState<number | null>(null);
+
+  const [fields, setFields] = useState<FormFields>({
+    owner: "",
+    title: "",
+    payload: "",
+  });
+
+  useEffect(() => {
+    create().then((res) => setDraftId(res.data.id));
+  }, []);
+
+  const handleChange = (
+    key: string,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    return setFields({
+      ...fields,
+      [key]: event.target.value,
+    });
+  };
 
   const handleCollapseWindow = () => {
     setCollapsed((state) => !state);
@@ -31,6 +54,15 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
   const handleFullscreenWindow = () => {
     setCollapsed(false);
     setFullscreen((state) => !state);
+  };
+
+  const handleClose = () => {
+    if (!draftId) {
+      return;
+    }
+
+    toggleReport((state) => !state);
+    update({ ...fields, id: draftId });
   };
 
   const DeleteFile = (index: number) => {
@@ -57,6 +89,11 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Placeholder.configure({ placeholder: "Начните писать отчёт" }),
     ],
+    onUpdate: ({ editor }) =>
+      setFields((prevValue) => ({
+        ...prevValue,
+        payload: JSON.stringify(editor.getJSON()),
+      })),
   });
 
   return (
@@ -90,22 +127,26 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
                   <MdFullscreen size={"18"} />
             }
           </Button>
-          <Button
-            color="red"
-            size="compact-sm"
-            onClick={() => toggleReport((state) => !state)}
-          >
+          <Button color="red" size="compact-sm" onClick={handleClose}>
             <IoMdClose size={"18"} />
           </Button>
         </Button.Group>
       </Group>
       {!isCollapsed && (
         <>
-          <TextInput label="От кого" withAsterisk placeholder="Введите ФИО" />
+          <TextInput
+            label="От кого"
+            withAsterisk
+            placeholder="Введите ФИО"
+            value={fields.owner}
+            onChange={(e) => handleChange("owner", e)}
+          />
           <TextInput
             label="Заголовок"
             withAsterisk
             placeholder="Введите заголовок"
+            value={fields.title}
+            onChange={(e) => handleChange("title", e)}
           />
           <TextEditor editor={editor} />
           {files.length > 0 && (
@@ -122,7 +163,7 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
               ))}
             </div>
           )}
-          <FileList setFiles={setFiles} />
+          <FileList setFiles={setFiles} reportId={draftId} />
         </>
       )}
     </Dialog>

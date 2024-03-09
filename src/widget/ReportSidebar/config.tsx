@@ -16,9 +16,6 @@ export const NAV_LINK_LIST = [
     label: "Мои отчеты",
     rightSection: <IconChevronRight size="1rem" stroke={1.5} />,
   },
-  {
-    icon: IconNotes,
-    label: "Черновики",
-    rightSection: <IconChevronRight size="1rem" stroke={1.5} />,
-  },
 ];
+
+export const NAME = "Varvara Talankina";
