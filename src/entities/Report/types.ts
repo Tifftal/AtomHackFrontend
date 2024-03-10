@@ -47,4 +47,5 @@ export type Props = {
 export type SearchParams = {
   statuses: ReportDeliveryStatus[];
   search: string;
+  page: number;
 };
