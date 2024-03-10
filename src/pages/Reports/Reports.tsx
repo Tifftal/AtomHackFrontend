@@ -73,9 +73,6 @@ export const Reports = (props: IReportsProps) => {
     if (status === "В ожидании") {
       searchParams.set("deliveryStatus", "PENDING");
     }
-    if (status === "Ошибка") {
-      searchParams.set("deliveryStatus", "ERROR");
-    }
 
     setSearchParams(searchParams);
     setCurrentPage(1);
@@ -86,7 +83,7 @@ export const Reports = (props: IReportsProps) => {
       <div className="reports-table-filters">
         <Select
           className="reports-table-filters__status"
-          data={["Успешно", "В ожидании", "Ошибка"]}
+          data={["Успешно", "В ожидании"]}
           label="Выберите статусы"
           comboboxProps={{
             transitionProps: { transition: "scale-y", duration: 200 },
