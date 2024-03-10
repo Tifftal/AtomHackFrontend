@@ -82,6 +82,7 @@ export const Reports = (props: IReportsProps) => {
     <div className="reports-table">
       <div className="reports-table-filters">
         <Select
+          placeholder="Указать фильтры"
           className="reports-table-filters__status"
           data={["Успешно", "В ожидании"]}
           label="Выберите статусы"
@@ -91,6 +92,7 @@ export const Reports = (props: IReportsProps) => {
           onChange={(value) => handleStatusChange(value)}
         />
         <TextInput
+          placeholder="Искать"
           label="Поиск"
           className="reports-table-filters__search"
           onChange={(event) =>
