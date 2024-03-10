@@ -1,10 +1,11 @@
 import { RouteObject } from "react-router-dom";
 import { MainLayout } from "./widget/MainLayout";
-import { IconMail, IconUser } from "@tabler/icons-react";
+import { IconMail, IconUser, IconPencil } from "@tabler/icons-react";
 import { Reports } from "./pages/Reports/Reports";
 import { ReportDetailed } from "./pages/ReportDetailed";
 import { AuthPage } from "./pages/Auth";
 import { NotFoundPage } from "./pages/NotFound";
+import { Drafts } from "./pages/Drafts";
 
 /**
  * Маршруты приложения
@@ -15,6 +16,7 @@ export enum RoutesEnum {
   MyReports = "/my/reports/",
   Report = "/reports/",
   Login = "/login",
+  Drafts = "/drafts",
 }
 
 export interface IAppRoute {
@@ -57,6 +59,12 @@ export const routes: IAppRoute[] = [
       {
         path: RoutesEnum.Report + ":id",
         element: <ReportDetailed />,
+      },
+      {
+        path: RoutesEnum.Drafts,
+        element: <Drafts />,
+        label: "Черновики",
+        icon: <IconPencil size="18" stroke={1.5} />,
       },
     ],
   },

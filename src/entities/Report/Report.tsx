@@ -1,8 +1,8 @@
 import { Table } from "@mantine/core";
 import { Props } from "./types";
 import { Status } from "../Status/Status";
-import { format } from 'date-fns';
-import { ru } from 'date-fns/locale';
+import { format } from "date-fns";
+import { ru } from "date-fns/locale";
 import "./Report.modul.scss";
 import { useCallback } from "react";
 import { useNavigate } from "react-router";
@@ -14,6 +14,7 @@ export const Report: React.FC<Props> = ({
   sentTime,
   status,
   title,
+  onClick,
 }) => {
   const navigate = useNavigate();
 
@@ -22,15 +23,23 @@ export const Report: React.FC<Props> = ({
   }, [navigate, id]);
 
   return (
-    <Table.Tr className="report-wrapper" onClick={handleClick}>
-      <Table.Td className="report-owner"><h4>{owner}</h4></Table.Td>
+    <Table.Tr className="report-wrapper" onClick={onClick ?? handleClick}>
+      <Table.Td className="report-owner">
+        <h4>{owner}</h4>
+      </Table.Td>
       <Table.Td className="report-payload">
         <h5>{title}</h5>
       </Table.Td>
-      <Table.Td className="report-timestamp">{format(sentTime, 'd LLL', { locale: ru })}</Table.Td>
-      <Table.Td className="report-status">
-        <Status status={status} />
-      </Table.Td>
+      {sentTime && (
+        <Table.Td className="report-timestamp">
+          {format(sentTime, "d LLL", { locale: ru })}
+        </Table.Td>
+      )}
+      {status && (
+        <Table.Td className="report-status">
+          <Status status={status} />
+        </Table.Td>
+      )}
     </Table.Tr>
   );
 };

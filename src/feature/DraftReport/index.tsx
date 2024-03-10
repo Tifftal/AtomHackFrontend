@@ -20,17 +20,23 @@ import Highlight from "@tiptap/extension-highlight";
 import { create, update } from "../../entities/Report/api";
 import { remove } from "../../entities/File/api";
 import { useAuth } from "../../utils/hooks/useAuth";
+import { ReportFile } from "../../entities/Report/types";
 
-const DraftReport: React.FC<Props> = ({ toggleReport }) => {
+const DraftReport: React.FC<Props> = ({ toggleReport, initialData }) => {
+  const [initialFiles, setInitialFiles] = useState<ReportFile[]>(
+    initialData?.files || []
+  );
   const [files, setFiles] = useState<FileField[]>([]);
   const [isCollapsed, setCollapsed] = useState(false);
   const [isFullscreen, setFullscreen] = useState(false);
 
-  const [draftId, setDraftId] = useState<number | null>(null);
+  const [draftId, setDraftId] = useState<number | null>(
+    initialData?.id || null
+  );
 
   const [fields, setFields] = useState<FormFields>({
-    title: "",
-    payload: "",
+    title: initialData?.title || "",
+    payload: initialData?.payload || "",
   });
 
   const { user } = useAuth();
@@ -38,13 +44,14 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
   const isText: boolean =
     fields.payload &&
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    JSON.parse(fields.payload).content.map((item: any) => item.content)[0];
+    JSON.parse(fields.payload).content.some((item: any) => item.content);
   const isFieldsDone: boolean =
     !!fields.title.trim() && (isText || !!files.length);
 
   useEffect(() => {
+    if (initialData?.id) return;
     create().then((res) => setDraftId(res.data.id));
-  }, []);
+  }, [initialData]);
 
   const handleChange = (
     key: string,
@@ -67,11 +74,12 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
   };
 
   const saveReport = async () => {
-    if (!draftId) {
-      return;
-    }
-    toggleReport((state) => !state);
-    await update({ ...fields, id: draftId, owner: user.name });
+    if (!isFieldsDone || !draftId) return;
+    await update({
+      ...fields,
+      id: initialData?.id || draftId,
+      owner: user.name,
+    });
   };
 
   const handleClose = () => {
@@ -79,15 +87,23 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
     toggleReport((state) => !state);
   };
 
+  const DeleteLocalFile = (index: number) => {
+    if (!draftId) {
+      return;
+    }
+    const fileId = files[index].id;
+    const updatedFiles = files.filter((_, i) => i !== index);
+    setFiles(updatedFiles);
+    remove({ reportId: draftId, fileId });
+  };
   const DeleteFile = (index: number) => {
     if (!draftId) {
       return;
     }
-
-    const fileId = files[index].id;
-    const updatedFiles = files.filter((_, i) => i !== index);
-    setFiles(updatedFiles);
-
+    const fileId = initialFiles.find((file) => file.id === index)?.id;
+    if (!fileId) return;
+    const updatedFiles = initialFiles.filter((file) => file.id !== index);
+    setInitialFiles(updatedFiles);
     remove({ reportId: draftId, fileId });
   };
 
@@ -116,6 +132,11 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
         payload: JSON.stringify(editor.getJSON()),
       })),
   });
+
+  useEffect(() => {
+    if (!initialData?.payload || !editor) return;
+    editor.commands.setContent(JSON.parse(initialData.payload));
+  }, [initialData, editor]);
 
   return (
     <Dialog
@@ -190,18 +211,30 @@ const DraftReport: React.FC<Props> = ({ toggleReport }) => {
             onChange={(e) => handleChange("title", e)}
           />
           <TextEditor editor={editor} />
-          {files.length > 0 && (
+          {(files.length > 0 || initialFiles.length > 0) && (
             <div className="files">
-              {files.map((item, index) => (
-                <File
-                  key={index}
-                  index={index}
-                  name={item.file.name}
-                  isDraft={true}
-                  type={item.file.type}
-                  DeleteFile={DeleteFile}
-                />
-              ))}
+              {files.length > 0 &&
+                files.map((item, index) => (
+                  <File
+                    key={index}
+                    index={index}
+                    name={item.file.name}
+                    isDraft={true}
+                    type={item.file.type}
+                    DeleteFile={DeleteLocalFile}
+                  />
+                ))}
+              {initialFiles.length > 0 &&
+                initialFiles.map((item, index) => (
+                  <File
+                    key={index}
+                    index={item.id}
+                    name={item.path.split("/").slice(-1)[0]}
+                    isDraft={true}
+                    type={"file"}
+                    DeleteFile={DeleteFile}
+                  />
+                ))}
             </div>
           )}
           <FileList

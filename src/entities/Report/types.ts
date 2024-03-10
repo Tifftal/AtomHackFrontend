@@ -36,12 +36,13 @@ export type ReportUpdateApi = {
 export type Props = {
   id: number;
   owner: string;
-  sentTime: Date;
+  sentTime?: Date;
   receivedTime?: Date;
   payload?: string;
-  status: ReportDeliveryStatus;
+  status?: ReportDeliveryStatus;
   file?: File[];
   title: string;
+  onClick?: () => void;
 };
 
 export type SearchParams = {
