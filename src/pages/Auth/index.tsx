@@ -24,7 +24,10 @@ export const AuthPage = (): React.ReactNode => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
-  const handleLogin = () => {
+  const handleLogin = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
     if (!userData.login.trim()) {
       setError("Введите логин");
       return;
