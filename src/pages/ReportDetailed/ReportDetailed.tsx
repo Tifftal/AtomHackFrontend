@@ -78,7 +78,7 @@ export const ReportDetailed = () => {
         <>
           <div className={s.root__toolbar}>
             <IconChevronLeft
-              size={20}
+              size={25}
               stroke={1.5}
               onClick={() => navigate(-1)}
               cursor="pointer"
@@ -91,13 +91,13 @@ export const ReportDetailed = () => {
             <div className={s.root__toolbar__btn}>
               <div style={{ textAlign: "end" }}>
                 <Text size="sm" fw={500}>
-                  Отправлено: {format(report.sentTime, "HH:mm dd.MM.yyyy")}
+                  Отправлено: {format(report.sentTime, "HH:mm:ss dd.MM.yyyy")}
                 </Text>
 
                 {report.receivedTime ? (
                   <Text size="sm" fw={500}>
                     Доставлено:{" "}
-                    {format(report.receivedTime, "HH:mm dd.MM.yyyy")}
+                    {format(report.receivedTime, "HH:mm:ss dd.MM.yyyy")}
                   </Text>
                 ) : (
                   <Text c="red" size="sm" fw={500}>
@@ -109,6 +109,7 @@ export const ReportDetailed = () => {
                 variant="filled"
                 aria-label="Сохранить"
                 onClick={handleSave}
+                color="orange.8"
               >
                 <IconDownload
                   style={{ width: "80%", height: "80%" }}
