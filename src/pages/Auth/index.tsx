@@ -50,7 +50,7 @@ export const AuthPage = (): React.ReactNode => {
   return (
     <div className={s.root}>
       <Dialog opened={true}>
-        <Text size="sm">Логин: Иванов</Text>
+        <Text size="sm">Логин: Иванов С. В.</Text>
         <Text size="sm">Пароль: 1234</Text>
       </Dialog>
       <form className={s.form}>
