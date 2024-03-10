@@ -1,5 +1,10 @@
 import { apiInstance } from "../../shared/api";
-import { ReportListModel, ReportModel, ReportUpdateApi } from "./types";
+import {
+  ReportDeliveryStatus,
+  ReportListModel,
+  ReportModel,
+  ReportUpdateApi,
+} from "./types";
 
 const ENDPOINTS = {
   base: "/api/v1/document/",
@@ -10,12 +15,11 @@ export const getAll = async (options: {
   page: number;
   pageSize: number;
   type: "draft" | "formed";
+  deliveryStatus?: ReportDeliveryStatus;
 }) => {
-  return apiInstance.get<ReportListModel>(ENDPOINTS.withPath(options.type), {
-    params: {
-      page: options.page,
-      pageSize: options.pageSize,
-    },
+  const { type, ...params } = options;
+  return apiInstance.get<ReportListModel>(ENDPOINTS.withPath(type), {
+    params,
   });
 };
 

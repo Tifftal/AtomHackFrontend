@@ -1,21 +1,15 @@
-import {
-  Group,
-  MultiSelect,
-  Pagination,
-  Table,
-  TextInput,
-} from "@mantine/core";
-import { useEffect, useState } from "react";
+import { Group, Pagination, Select, Table, TextInput } from "@mantine/core";
+import { useCallback, useEffect, useState } from "react";
 import { Report } from "../../entities/Report/Report";
-import { ReportDeliveryStatus, ReportModel } from "../../entities/Report/types";
-import { SearchParams } from "../../entities/Report/types";
+import { ReportModel } from "../../entities/Report/types";
 
 import "./Reports.modul.scss";
 import { getAll } from "../../entities/Report/api";
 import { IReportsProps } from "./types";
 import { useAuth } from "../../utils/hooks/useAuth";
+import { useSearchParams } from "react-router-dom";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 2;
 
 export const Reports = (props: IReportsProps) => {
   const { isUserReports } = props;
@@ -23,67 +17,74 @@ export const Reports = (props: IReportsProps) => {
   // TODO: use auth
   const { user } = useAuth();
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [currentPage, setCurrentPage] = useState(
+    Number(searchParams.get("page")) || 1
+  );
   const [total, setTotal] = useState(0);
 
+  const handleFetch = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const options: any = {
+      page: currentPage,
+      pageSize: PAGE_SIZE,
+      type: "formed",
+    };
+
+    const deliveryStatus = searchParams.get("deliveryStatus");
+    if (deliveryStatus) {
+      options.deliveryStatus = deliveryStatus;
+    }
+
+    getAll(options).then((res) => {
+      setReports(
+        isUserReports
+          ? res.data.items.filter((report) => report.owner === user.name)
+          : res.data.items
+      );
+      setTotal(res.data.total);
+    });
+  }, [currentPage, searchParams, isUserReports, user.name]);
+
   useEffect(() => {
-    getAll({ page: currentPage, pageSize: PAGE_SIZE, type: "formed" }).then(
-      (res) => {
-        setReports(
-          isUserReports
-            ? res.data.items.filter((report) => report.owner === user.name)
-            : res.data.items
-        );
-        setTotal(res.data.total);
-      }
-    );
+    handleFetch();
 
     const intervalId = setInterval(() => {
-      getAll({ page: currentPage, pageSize: PAGE_SIZE, type: "formed" }).then(
-        (res) => {
-          setReports(
-            isUserReports
-              ? res.data.items.filter((report) => report.owner === user.name)
-              : res.data.items
-          );
-          setTotal(res.data.total);
-        }
-      );
+      handleFetch();
     }, 10000);
 
     return () => clearInterval(intervalId);
-  }, [currentPage, isUserReports, user]);
+  }, [handleFetch]);
 
-  const [searchParams, setSearchParams] = useState<SearchParams>({
-    statuses: [],
-    search: "",
-  });
+  useEffect(() => {
+    searchParams.set("page", currentPage.toString());
+    setSearchParams(searchParams);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
-  const handleStatusChange = (statuses: string[]) => {
-    const newStatuses: ReportDeliveryStatus[] = [];
-    if (statuses.length === 0) {
-      setSearchParams({
-        ...searchParams,
-        statuses: ["ERROR", "PENDING", "SUCCESS"],
-      });
-    } else {
-      if (statuses.includes("Успешно")) {
-        newStatuses.push("SUCCESS");
-      }
-      if (statuses.includes("В ожидании")) {
-        newStatuses.push("PENDING");
-      }
-      if (statuses.includes("Ошибка")) {
-        newStatuses.push("ERROR");
-      }
+  const handleStatusChange = (status: string | null) => {
+    if (!status) {
+      searchParams.delete("deliveryStatus");
     }
-    setSearchParams({ ...searchParams, statuses: newStatuses });
+    if (status === "Успешно") {
+      searchParams.set("deliveryStatus", "SUCCESS");
+    }
+    if (status === "В ожидании") {
+      searchParams.set("deliveryStatus", "PENDING");
+    }
+    if (status === "Ошибка") {
+      searchParams.set("deliveryStatus", "ERROR");
+    }
+
+    setSearchParams(searchParams);
+    setCurrentPage(1);
   };
 
   return (
     <div className="reports-table">
       <div className="reports-table-filters">
-        <MultiSelect
+        <Select
           className="reports-table-filters__status"
           data={["Успешно", "В ожидании", "Ошибка"]}
           label="Выберите статусы"
@@ -106,20 +107,21 @@ export const Reports = (props: IReportsProps) => {
       <Table highlightOnHover>
         <Table.Tbody>
           {reports
-            .filter(
-              (report) =>
-                searchParams.statuses.length === 0 ||
-                searchParams.statuses.includes(report.deliveryStatus)
-            )
-            .filter(
-              (report) =>
-                report.owner
-                  .toLowerCase()
-                  .includes(searchParams.search.toLowerCase()) ||
-                report.payload
-                  ?.toLowerCase()
-                  .includes(searchParams.search.toLowerCase())
-            )
+            .filter((report) => {
+              const statuses = JSON.parse(searchParams.get("statuses") || "[]");
+
+              return (
+                !statuses.length || statuses.includes(report.deliveryStatus)
+              );
+            })
+            .filter((report) => {
+              const search = searchParams.get("search") || "";
+
+              return (
+                report.owner.toLowerCase().includes(search.toLowerCase()) ||
+                report.payload?.toLowerCase().includes(search.toLowerCase())
+              );
+            })
             .map((report) => (
               <Report
                 key={report.id}
