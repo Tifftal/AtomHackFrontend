@@ -16,6 +16,7 @@ export const getAll = async (options: {
   pageSize: number;
   type: "draft" | "formed";
   deliveryStatus?: ReportDeliveryStatus;
+  ownerOrTitle?: string;
 }) => {
   const { type, ...params } = options;
   return apiInstance.get<ReportListModel>(ENDPOINTS.withPath(type), {
@@ -41,4 +42,8 @@ export const update = async (options: ReportUpdateApi & { id: number }) => {
 
 export const send = async (options: { id: number }) => {
   return apiInstance.post<null>(ENDPOINTS.withPath(options.id));
+};
+
+export const remove = async (options: { id: number }) => {
+  return apiInstance.delete<null>(ENDPOINTS.withPath(options.id));
 };

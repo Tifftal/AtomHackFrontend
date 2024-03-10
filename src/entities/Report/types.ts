@@ -42,7 +42,9 @@ export type Props = {
   status?: ReportDeliveryStatus;
   file?: File[];
   title: string;
+  isDraft?: boolean;
   onClick?: () => void;
+  onRemove?: () => void;
 };
 
 export type SearchParams = {

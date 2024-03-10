@@ -1,4 +1,4 @@
-import { Table } from "@mantine/core";
+import { Table, ThemeIcon } from "@mantine/core";
 import { Props } from "./types";
 import { Status } from "../Status/Status";
 import { format } from "date-fns";
@@ -7,6 +7,7 @@ import "./Report.modul.scss";
 import { useCallback } from "react";
 import { useNavigate } from "react-router";
 import { RoutesEnum } from "../../AppRoutes";
+import { IconTrash } from "@tabler/icons-react";
 
 export const Report: React.FC<Props> = ({
   id,
@@ -14,7 +15,9 @@ export const Report: React.FC<Props> = ({
   sentTime,
   status,
   title,
+  isDraft,
   onClick,
+  onRemove,
 }) => {
   const navigate = useNavigate();
 
@@ -38,6 +41,19 @@ export const Report: React.FC<Props> = ({
       {status && (
         <Table.Td className="report-status">
           <Status status={status} />
+        </Table.Td>
+      )}
+      {isDraft && (
+        <Table.Td>
+          <IconTrash
+            stroke={1.5}
+            // style={{ width: "70%", height: "70%" }}
+            color="var(--mantine-color-red-filled)"
+            onClick={(event) => {
+              event.stopPropagation();
+              onRemove && onRemove();
+            }}
+          />
         </Table.Td>
       )}
     </Table.Tr>
