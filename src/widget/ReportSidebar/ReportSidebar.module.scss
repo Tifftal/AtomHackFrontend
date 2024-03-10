@@ -2,7 +2,7 @@
   border-radius: 5px 0 0 5px;
   width: 20vw;
   padding: 2vh;
-  background-color: rgba(95, 61, 196, 0.03);
+  background-color: rgba(217, 72, 15, 0.03);
 
   &-manage {
     display: flex;
@@ -18,7 +18,7 @@
     align-items: center;
     gap: 1vh;
     width: 100%;
-    margin-bottom: 2vh;
+    margin: 2vh 0;
   }
 
   &__refresh-btn {

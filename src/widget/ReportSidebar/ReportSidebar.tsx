@@ -47,7 +47,7 @@ export const ReportSidebar = () => {
           <ActionIcon
             variant="light"
             color="red"
-            size="md"
+            size="lg"
             aria-label="Settings"
             onClick={logoutHandleClick}
           >
