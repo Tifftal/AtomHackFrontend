@@ -1,4 +1,11 @@
-import { TextInput, Button, PasswordInput, Image, Dialog, Text } from "@mantine/core";
+import {
+  TextInput,
+  Button,
+  PasswordInput,
+  Image,
+  Dialog,
+  Text,
+} from "@mantine/core";
 import s from "./Auth.module.scss";
 import { useState } from "react";
 import logo from "../../assets/mars_logo1.png";
@@ -43,12 +50,8 @@ export const AuthPage = (): React.ReactNode => {
   return (
     <div className={s.root}>
       <Dialog opened={true}>
-        <Text size="sm">
-          Пароль: admin
-        </Text>
-        <Text size="sm">
-          Логин: admin
-        </Text>
+        <Text size="sm">Логин: Иванов</Text>
+        <Text size="sm">Пароль: 1234</Text>
       </Dialog>
       <form className={s.form}>
         <Image src={logo} alt="logo" className={s.logo} />
@@ -67,7 +70,12 @@ export const AuthPage = (): React.ReactNode => {
           }
         />
         <div className={s.error}>{error}</div>
-        <Button onClick={handleLogin} color="orange" className={s.button} type="submit">
+        <Button
+          onClick={handleLogin}
+          color="orange"
+          className={s.button}
+          type="submit"
+        >
           Войти
         </Button>
       </form>
