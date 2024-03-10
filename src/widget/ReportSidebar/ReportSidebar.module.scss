@@ -4,6 +4,14 @@
   padding: 2vh;
   background-color: rgba(95, 61, 196, 0.03);
 
+  &-manage {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
   &__new-btn {
     display: flex;
     flex-direction: row;

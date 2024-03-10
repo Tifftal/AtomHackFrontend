@@ -1,7 +1,8 @@
-import { Button, NavLink } from "@mantine/core";
+import { ActionIcon, Button, NavLink } from "@mantine/core";
 import {
   IconChevronRight,
   IconPencilPlus,
+  IconLogout,
 } from "@tabler/icons-react";
 import DraftReport from "../../feature/DraftReport";
 import { useState } from "react";
@@ -15,7 +16,11 @@ import { useAuth } from "../../utils/hooks/useAuth";
 export const ReportSidebar = () => {
   const [isDraftOpen, setIsDraftOpen] = useState(false);
   const { pathname } = useLocation();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+
+  const logoutHandleClick = () => {
+    logout();
+  };
 
   const items = AppRoutes.map((item) => (
     <NavLink
@@ -35,9 +40,20 @@ export const ReportSidebar = () => {
     <>
       {isDraftOpen && <DraftReport toggleReport={setIsDraftOpen} />}
       <div className={s.sidebar}>
-        <Text size="md" fw={700}>
-          {user.name.toUpperCase()}
-        </Text>
+        <div className={s["sidebar-manage"]}>
+          <Text size="md" fw={700}>
+            {user.name.toUpperCase()}
+          </Text>
+          <ActionIcon
+            variant="light"
+            color="red"
+            size="md"
+            aria-label="Settings"
+            onClick={logoutHandleClick}
+          >
+            <IconLogout className={s["sidebar__refresh-btn"]} stroke={2} />
+          </ActionIcon>
+        </div>
         <div className={s["sidebar__new-btn"]}>
           <Button
             leftSection={<IconPencilPlus size={20} />}
@@ -48,7 +64,7 @@ export const ReportSidebar = () => {
           >
             Написать
           </Button>
-         {/*  <ActionIcon
+          {/*  <ActionIcon
             variant="filled"
             color="orange"
             size="lg"
