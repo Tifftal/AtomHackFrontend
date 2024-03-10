@@ -9,7 +9,7 @@ import { IReportsProps } from "./types";
 import { useAuth } from "../../utils/hooks/useAuth";
 import { useSearchParams } from "react-router-dom";
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 10;
 
 export const Reports = (props: IReportsProps) => {
   const { isUserReports } = props;
@@ -23,6 +23,7 @@ export const Reports = (props: IReportsProps) => {
     Number(searchParams.get("page")) || 1
   );
   const [total, setTotal] = useState(0);
+  const [search, setSearch] = useState(searchParams.get("ownerOrTitle") || "");
 
   const handleFetch = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,6 +36,11 @@ export const Reports = (props: IReportsProps) => {
     const deliveryStatus = searchParams.get("deliveryStatus");
     if (deliveryStatus) {
       options.deliveryStatus = deliveryStatus;
+    }
+
+    const ownerOrTitle = searchParams.get("ownerOrTitle");
+    if (ownerOrTitle) {
+      options.ownerOrTitle = ownerOrTitle;
     }
 
     getAll(options).then((res) => {
@@ -94,13 +100,17 @@ export const Reports = (props: IReportsProps) => {
         <TextInput
           placeholder="Искать"
           label="Поиск"
+          value={search}
           className="reports-table-filters__search"
-          onChange={(event) =>
-            setSearchParams({
-              ...searchParams,
-              search: event.currentTarget.value,
-            })
-          }
+          onChange={(event) => setSearch(event.currentTarget.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              search
+                ? searchParams.set("ownerOrTitle", search)
+                : searchParams.delete("ownerOrTitle");
+              setSearchParams(searchParams);
+            }
+          }}
         ></TextInput>
       </div>
       <Table highlightOnHover>
@@ -136,7 +146,7 @@ export const Reports = (props: IReportsProps) => {
         </Table.Tbody>
       </Table>
 
-      {reports.length > 0 && (
+      {reports.length > 0 && total > PAGE_SIZE && (
         <Pagination.Root
           value={currentPage}
           onChange={setCurrentPage}
