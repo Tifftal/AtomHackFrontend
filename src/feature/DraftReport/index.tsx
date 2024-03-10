@@ -156,7 +156,7 @@ const DraftReport: React.FC<Props> = ({ toggleReport, initialData }) => {
         </Text>
         <Button.Group>
           <Button
-            color="violet"
+            color="orange"
             size="compact-sm"
             onClick={handleCollapseWindow}
           >
@@ -170,7 +170,7 @@ const DraftReport: React.FC<Props> = ({ toggleReport, initialData }) => {
             )}
           </Button>
           <Button
-            color="violet"
+            color="orange"
             size="compact-sm"
             onClick={handleFullscreenWindow}
           >

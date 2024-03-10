@@ -1,4 +1,4 @@
-import { Table, ThemeIcon } from "@mantine/core";
+import { Table } from "@mantine/core";
 import { Props } from "./types";
 import { Status } from "../Status/Status";
 import { format } from "date-fns";
@@ -16,6 +16,7 @@ export const Report: React.FC<Props> = ({
   status,
   title,
   isDraft,
+  createdAt,
   onClick,
   onRemove,
 }) => {
@@ -35,7 +36,12 @@ export const Report: React.FC<Props> = ({
       </Table.Td>
       {sentTime && (
         <Table.Td className="report-timestamp">
-          {format(sentTime, "d LLL", { locale: ru })}
+          {format(sentTime, "d LLL p", { locale: ru })}
+        </Table.Td>
+      )}
+      {isDraft && !!createdAt && (
+        <Table.Td className="report-timestamp">
+          {format(createdAt, "d LLL p", { locale: ru })}
         </Table.Td>
       )}
       {status && (

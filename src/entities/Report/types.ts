@@ -38,6 +38,7 @@ export type Props = {
   owner: string;
   sentTime?: Date;
   receivedTime?: Date;
+  createdAt?: Date;
   payload?: string;
   status?: ReportDeliveryStatus;
   file?: File[];

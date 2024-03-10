@@ -115,38 +115,42 @@ export const Reports = (props: IReportsProps) => {
       </div>
       <Table highlightOnHover>
         <Table.Tbody>
-          {reports
-            .filter((report) => {
-              const statuses = JSON.parse(searchParams.get("statuses") || "[]");
+          {!!reports &&
+            !!reports.length &&
+            reports
+              .filter((report) => {
+                const statuses = JSON.parse(
+                  searchParams.get("statuses") || "[]"
+                );
 
-              return (
-                !statuses.length || statuses.includes(report.deliveryStatus)
-              );
-            })
-            .filter((report) => {
-              const search = searchParams.get("search") || "";
+                return (
+                  !statuses.length || statuses.includes(report.deliveryStatus)
+                );
+              })
+              .filter((report) => {
+                const search = searchParams.get("search") || "";
 
-              return (
-                report.owner.toLowerCase().includes(search.toLowerCase()) ||
-                report.payload?.toLowerCase().includes(search.toLowerCase())
-              );
-            })
-            .map((report) => (
-              <Report
-                key={report.id}
-                owner={report.owner}
-                sentTime={new Date(report.sentTime)}
-                receivedTime={new Date(report.receivedTime || "")}
-                status={report.deliveryStatus}
-                file={report.file}
-                id={report.id}
-                title={report.title}
-              />
-            ))}
+                return (
+                  report.owner.toLowerCase().includes(search.toLowerCase()) ||
+                  report.payload?.toLowerCase().includes(search.toLowerCase())
+                );
+              })
+              .map((report) => (
+                <Report
+                  key={report.id}
+                  owner={report.owner}
+                  sentTime={new Date(report.sentTime)}
+                  receivedTime={new Date(report.receivedTime || "")}
+                  status={report.deliveryStatus}
+                  file={report.file}
+                  id={report.id}
+                  title={report.title}
+                />
+              ))}
         </Table.Tbody>
       </Table>
 
-      {reports.length > 0 && total > PAGE_SIZE && (
+      {!!reports && !!reports.length && total > PAGE_SIZE && (
         <Pagination.Root
           value={currentPage}
           onChange={setCurrentPage}

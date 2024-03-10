@@ -41,7 +41,7 @@ export const FileList = (props: Props) => {
         <Button
           loading={isSendButtonLoading}
           variant="filled"
-          color="violet"
+          color="orange"
           onClick={handleSend}
           disabled={!isSendActive}
         >

@@ -29,11 +29,11 @@ export const Drafts = () => {
       page: currentPage,
       pageSize: PAGE_SIZE,
       type: "draft",
+      owner: user.name
     };
-
-    const ownerOrTitle = searchParams.get("ownerOrTitle");
-    if (ownerOrTitle) {
-      options.ownerOrTitle = ownerOrTitle;
+    const title = searchParams.get("title");
+    if (title) {
+      options.title = title;
     }
 
     getAll(options).then((res) => {
@@ -42,7 +42,7 @@ export const Drafts = () => {
       setReports(res.data.items);
       setTotal(res.data.total);
     });
-  }, [currentPage, searchParams, user.name]);
+  }, [currentPage, searchParams, user]);
 
   useEffect(() => {
     handleFetch();
@@ -88,8 +88,8 @@ export const Drafts = () => {
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 search
-                  ? searchParams.set("ownerOrTitle", search)
-                  : searchParams.delete("ownerOrTitle");
+                  ? searchParams.set("title", search)
+                  : searchParams.delete("title");
                 setSearchParams(searchParams);
               }
             }}
@@ -97,22 +97,25 @@ export const Drafts = () => {
         </div>
         <Table highlightOnHover>
           <Table.Tbody>
-            {reports.map((report) => (
-              <Report
-                onClick={() => handleDraftClick(report.id)}
-                onRemove={() => handleDraftRemove(report.id)}
-                key={report.id}
-                owner={report.owner}
-                file={report.file}
-                id={report.id}
-                title={report.title}
-                isDraft
-              />
-            ))}
+            {!!reports &&
+              !!reports.length &&
+              reports.map((report) => (
+                <Report
+                  onClick={() => handleDraftClick(report.id)}
+                  onRemove={() => handleDraftRemove(report.id)}
+                  key={report.id}
+                  owner={report.owner}
+                  file={report.file}
+                  id={report.id}
+                  title={report.title}
+                  createdAt={new Date(report.createdAt)}
+                  isDraft
+                />
+              ))}
           </Table.Tbody>
         </Table>
 
-        {reports.length > 0 && (
+        {!!reports && !!reports.length && reports.length > 0 && (
           <Pagination.Root
             value={currentPage}
             onChange={setCurrentPage}

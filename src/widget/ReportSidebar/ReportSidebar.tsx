@@ -1,8 +1,7 @@
-import { ActionIcon, Button, NavLink } from "@mantine/core";
+import { Button, NavLink } from "@mantine/core";
 import {
   IconChevronRight,
   IconPencilPlus,
-  IconRefresh,
 } from "@tabler/icons-react";
 import DraftReport from "../../feature/DraftReport";
 import { useState } from "react";
@@ -28,7 +27,7 @@ export const ReportSidebar = () => {
       active={item.path === pathname}
       rightSection={<IconChevronRight size="18" stroke={1.5} />}
       leftSection={item.icon}
-      color="violet.6"
+      color="orange.9"
     />
   ));
 
@@ -44,19 +43,19 @@ export const ReportSidebar = () => {
             leftSection={<IconPencilPlus size={20} />}
             fullWidth
             variant="filled"
-            color="violet"
+            color="orange.8"
             onClick={() => setIsDraftOpen((state) => !state)}
           >
             Написать
           </Button>
-          <ActionIcon
+         {/*  <ActionIcon
             variant="filled"
-            color="violet"
+            color="orange"
             size="lg"
             aria-label="Settings"
           >
             <IconRefresh className={s["sidebar__refresh-btn"]} stroke={2} />
-          </ActionIcon>
+          </ActionIcon> */}
         </div>
         <div className="sidebar-menu">{items}</div>
       </div>
